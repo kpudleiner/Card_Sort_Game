@@ -31,12 +31,15 @@ import random
 
 #More robust class version
 class DeckStack:
-    _global_seed = 0
+    #_global_seed = 0
     def __init__(self, num_decks, seed = None):
 
         if not seed:
+            print('in loop')
+            print(DeckStack._global_seed)
             self.seed = DeckStack._global_seed
             DeckStack._global_seed += 1
+            print(DeckStack._global_seed)
             np.random.seed(self.seed)
         else:
             self.seed = seed
@@ -50,6 +53,8 @@ class DeckStack:
 
             self.all_decks[i] = new_deck
 
+        # np.random.randint(0,2, size = (num_decks, 52))
+
     def __repr__(self):
         return f"DeckStack(seed={self.seed}, cards={self.all_decks})"
 
@@ -59,7 +64,8 @@ class DeckStack:
 
 print('hello')
 
-test = DeckStack(3)
-print(test)
-print(test.all_decks)
+test = DeckStack(1000)
+#print(test)
+print(test.all_decks[900])
+print(test.seed)
 
