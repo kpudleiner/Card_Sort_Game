@@ -31,7 +31,7 @@ import random
 
 #More robust class version
 class DeckStack:
-    #_global_seed = 0
+    _global_seed = 0 #WRONG!!!!
     def __init__(self, num_decks, seed = None):
 
         if not seed:
@@ -68,4 +68,26 @@ test = DeckStack(1000)
 #print(test)
 print(test.all_decks[900])
 print(test.seed)
+
+
+class DeckStack_2:
+    #_global_seed = 0
+    def __init__(self, num_decks, seed = None):
+
+        self.seed = seed
+        self.num_decks = num_decks
+
+        base = np.array([0]*26 + [1]*26)
+
+        # Repeat the base row 5 times to make a (5, 52) array
+        repeated = np.tile(base, (5, 1))
+
+        # Shuffle each row independently using advanced indexing
+        result = np.array([np.random.permutation(row) for row in repeated])
+
+    def __repr__(self):
+        return f"DeckStack(seed={self.seed}, cards={self.all_decks})"
+
+    def reset_random_seed(self, random_seed):
+        DeckStack._global_seed = 0
 
