@@ -7,35 +7,39 @@ import numpy as np
 import random
 
 #Method 1: soter integer 0s and 1s as numpy arrays
-np.random.seed(1)
-num_decks = 3
-all_decks = np.empty((num_decks, 52))
-for i in range(num_decks):
-    new_deck = np.array([0] * 26 + [1] * 26)
 
-    np.random.shuffle(new_deck)
-    #print(new_deck)
+#General Creation Method
+# np.random.seed(1)
+# num_decks = 3
+# all_decks = np.empty((num_decks, 52))
+# for i in range(num_decks):
+#     new_deck = np.array([0] * 26 + [1] * 26)
 
-    all_decks[i] = new_deck
+#     np.random.shuffle(new_deck)
+#     #print(new_deck)
 
-    #all_decks = np.append(all_decks, new_deck, axis = 0)
+#     all_decks[i] = new_deck
 
-    print(all_decks)
-    np.save('test.npy', all_decks)
-    loaded = np.load('test.npy')
-    print(loaded)
+#     #all_decks = np.append(all_decks, new_deck, axis = 0)
 
+#     print(all_decks)
+#     np.save('test.npy', all_decks)
+#     loaded = np.load('test.npy')
+#     print(loaded)
 #.bin  vs .npy
 
 
+#More robust class version
 class DeckStack:
     _global_seed = 0
-    def __init__(self, num_decks, seed = 1):
-        self.seed = DeckStack._global_seed
-        DeckStack._global_seed += 1
+    def __init__(self, num_decks, seed = None):
 
-        # Set the seed for reproducible shuffling
-        random.seed(self.seed)
+        if not seed:
+            self.seed = DeckStack._global_seed
+            DeckStack._global_seed += 1
+            np.random.seed(self.seed)
+        else:
+            self.seed = seed
 
         self.num_decks = num_decks
         
@@ -43,23 +47,19 @@ class DeckStack:
         for i in range(num_decks):
             new_deck = np.array([0] * 26 + [1] * 26)
             np.random.shuffle(new_deck)
-            #print(new_deck)
 
             self.all_decks[i] = new_deck
-        random.shuffle(self.cards)
 
     def __repr__(self):
-        return f"DeckStack(seed={self.seed}, cards={self.cards})"
+        return f"DeckStack(seed={self.seed}, cards={self.all_decks})"
 
-    def reset(self):
-        """Reset the deck using the same seed as the original initialization."""
-        random.seed(self.seed)
-        self.cards = np.array([0] * 26 + [1] * 26)
-        random.shuffle(self.cards)
+    def reset_random_seed(self, random_seed):
+        DeckStack._global_seed = 0
 
-    random_seed = 1
-    cards = np.random.shuffle(np.array([0] * 26 + [1] * 26))
-    def update_random_seed(self, random_seed):
-        random_seed += 1
 
-def create_decks(num_decks)
+print('hello')
+
+test = DeckStack(3)
+print(test)
+print(test.all_decks)
+
