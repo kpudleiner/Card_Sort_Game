@@ -30,7 +30,10 @@ class DeckStack:
             else:
                 self.seed = seed
         else:
-            self.seed = max(used_seeds) + 1
+            if len(used_seeds) == 0:
+                self.seed = 0
+            else:
+                self.seed = max(used_seeds) + 1
 
         unshuffled_deck = np.array([0]*26 + [1]*26)
         np.random.seed(self.seed)
@@ -41,6 +44,6 @@ class DeckStack:
         return f"DeckStack(seed={self.seed}, cards={self.decks})"
     
     def save_decks(self):
-        np.save(f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks)
+        np.save(f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks) #maybe save as a compressed file???
     
 

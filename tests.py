@@ -7,5 +7,8 @@ import os
 # new_seed = max(used_seeds) + 1
 # print(new_seed)
 
-test = DeckStack(3)
+test = DeckStack(1000000)
 test.save_decks()
+
+# test = np.load('Decks\DeckStack_7_10.npy')
+# print(test)
