@@ -1,14 +1,29 @@
+import numpy as np
+import random
+import os
+from typing import Callable
+from datetime import datetime as dt
+import time
 
 #Testing two methods of creating randomly shuffled deck stacks.
 # - Method 1: store integers 0s and 1s as numpy arrays
 # - Method 2: store as .bin
 
-import numpy as np
-import random
-import os
+def timer(fun: Callable) -> Callable:
+    def _wrapper(*args, **kwargs):
+        '''
+        This is the modified version of the function that gets returned.
+        '''
+        print(f'{fun.__name__} called')
+
+        t0 = dt.now()
+        results = fun(*args, **kwargs)
+        print(f'Ran for {dt.now()-t0} sec(s)')
+
+        return results
+    return _wrapper
 
 #Method 1: soter integer 0s and 1s as numpy arrays
-
 class DeckStack:
     """
     A class to represent multiple shuffled decks.
@@ -43,7 +58,6 @@ class DeckStack:
     def __repr__(self):
         return f"DeckStack(seed={self.seed}, cards={self.decks})"
     
+    @timer
     def save_decks(self):
         np.save(f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks) #maybe save as a compressed file???
-    
-
