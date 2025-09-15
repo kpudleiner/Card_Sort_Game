@@ -29,65 +29,28 @@ import random
 #.bin  vs .npy
 
 
-#More robust class version
 class DeckStack:
-    _global_seed = 0 #WRONG!!!!
-    def __init__(self, num_decks, seed = None):
-
-        if not seed:
-            print('in loop')
-            print(DeckStack._global_seed)
-            self.seed = DeckStack._global_seed
-            DeckStack._global_seed += 1
-            print(DeckStack._global_seed)
-            np.random.seed(self.seed)
-        else:
-            self.seed = seed
-
-        self.num_decks = num_decks
-        
-        self.all_decks = np.empty((num_decks, 52))
-        for i in range(num_decks):
-            new_deck = np.array([0] * 26 + [1] * 26)
-            np.random.shuffle(new_deck)
-
-            self.all_decks[i] = new_deck
-
-        # np.random.randint(0,2, size = (num_decks, 52))
-
-    def __repr__(self):
-        return f"DeckStack(seed={self.seed}, cards={self.all_decks})"
-
-    def reset_random_seed(self, random_seed):
-        DeckStack._global_seed = 0
-
-
-print('hello')
-
-test = DeckStack(1000)
-#print(test)
-print(test.all_decks[900])
-print(test.seed)
-
-
-class DeckStack_2:
     #_global_seed = 0
     def __init__(self, num_decks, seed = None):
 
         self.seed = seed
+        np.random.seed(self.seed)
+
         self.num_decks = num_decks
 
-        base = np.array([0]*26 + [1]*26)
+        unshuffled_deck = np.array([0]*26 + [1]*26)
 
-        # Repeat the base row 5 times to make a (5, 52) array
-        repeated = np.tile(base, (5, 1))
+        self.decks = np.tile(unshuffled_deck, (num_decks, 1))
 
-        # Shuffle each row independently using advanced indexing
-        result = np.array([np.random.permutation(row) for row in repeated])
+        np.array([np.random.shuffle(row) for row in self.decks])
 
     def __repr__(self):
-        return f"DeckStack(seed={self.seed}, cards={self.all_decks})"
+        return f"DeckStack(seed={self.seed}, cards={self.decks})"
+    
 
-    def reset_random_seed(self, random_seed):
-        DeckStack._global_seed = 0
+print('hello')
 
+test = DeckStack_2(3, 0)
+#print(test)
+print(test.decks)
+print(test.seed)
