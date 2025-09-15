@@ -1,0 +1,37 @@
+import random
+
+def generate_deck():
+    # Generates a deck with 26 zeros and 26 ones.
+    
+    flips = [0] * 26 + [1] * 26
+    random.shuffle(flips)
+    return flips
+
+
+def save_deck(flips, filename, mode="ab"):
+    # Save a list of 0s and 1s to a binary file, one byte per flip.
+    # Appends to the file.
+    
+    with open(filename, mode) as f:
+        f.write(bytes(flips))
+
+
+def repeat_and_save(num_repeats, filename):
+    # Generate and save 52-bit balanced flips num_repeats times.
+    # Appends each sequence to the same file.
+    
+    for _ in range(num_repeats):
+        flips = generate_deck()
+        save_deck(flips, filename, mode="ab")  # append
+
+
+def load_flips(filename):
+    # Load a list of 0s and 1s from a binary file.
+    
+    with open(filename, "rb") as f:
+        return list(f.read())
+
+
+# check size of your binary files
+import os
+size_bytes = os.stat('first.bin').st_size
