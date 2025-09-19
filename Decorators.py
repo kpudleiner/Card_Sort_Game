@@ -38,7 +38,7 @@ def gen_timer(fun: Callable) -> Callable:
         new_row = pd.DataFrame([{'deck_type': class_name,
                                 'num_decks': num_decks, 
                                 'random_seed': seed, 
-                                'gen_time': run_time.total_seconds(), 
+                                'gen_time': run_time, 
                                 'file_size': None, 
                                 'write_time': None, 
                                 'read_time': None}])
