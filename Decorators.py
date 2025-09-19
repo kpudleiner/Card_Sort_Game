@@ -66,7 +66,7 @@ def write_read_timer(fun: Callable) -> Callable:
             read_time = dt.now()- t0
         elif self.__class__.__name__ == 'DeckStack_bin':
             t0 = dt.now()
-            np.fromfile("Decks/DeckStack_9_10000.bin", dtype=np.int8)
+            np.fromfile(f'Decks/DeckStack_{seed}_{num_decks}.bin', dtype=np.int8)
             read_time = dt.now()- t0
 
         print(f'Ran for {read_time} sec(s)')

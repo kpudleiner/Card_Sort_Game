@@ -5,9 +5,11 @@ import pandas as pd
 import random
 
 #method1_generation_timer = []
-test = DeckStack_bin(10000)
-test.save_decks()
-print(type(test))
+for i in range(10):
+    decks_npy = DeckStack_npy(10000)
+    decks_npy.save_decks()
+    decks_bin = DeckStack_bin(10000)
+    decks_bin.save_decks()
 
 # test2 = DeckStack_npy(10000)
 # test2.save_decks()
