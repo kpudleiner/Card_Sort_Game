@@ -4,12 +4,13 @@ import os
 from typing import Callable
 from datetime import datetime as dt
 import time
+import pandas as pd
 
 #Testing two methods of creating randomly shuffled deck stacks.
 # - Method 1: store integers 0s and 1s as numpy arrays
 # - Method 2: store as .bin
 
-def timer(fun: Callable) -> Callable:
+def gen_timer(fun: Callable) -> Callable:
     def _wrapper(*args, **kwargs):
         '''
         This is the modified version of the function that gets returned.
@@ -18,15 +19,33 @@ def timer(fun: Callable) -> Callable:
 
         t0 = dt.now()
         results = fun(*args, **kwargs)
-        print(f'Ran for {dt.now()-t0} sec(s)')
+        run_time = dt.now()- t0
+        print(f'Ran for {run_time} sec(s)')
+
+        num_decks = args[1]
+        seed = args[2]
+        Deck_Stats = pd.read_csv('Deck_Stats.csv')
+        if seed in Deck_Stats['random_seed']: #theoretically shouldn't happen
+            raise ValueError(
+                    f'Decks with this random seed have already been generatied. Please choose a different seed.'
+                    )
+        else:
+            new_row = pd.DataFrame({'num_decks': num_decks, 
+                                    'random_seed': seed, 
+                                    'gen_time': run_time, 
+                                    'file_size': None, 
+                                    'save_time': None, 
+                                    'load_time': None})
+            Deck_Stats = pd.concat([Deck_Stats, new_row], ignore_index = True)
 
         return results
     return _wrapper
 
-def size(fun: Callable) -> Callable:
+def get_size(fun: Callable) -> Callable:
     def _wrapper(*args, **kwargs):
         result = fun(*args, **kwargs)
         self = args[0]
+
         file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy'
         if os.path.exists(file_path):
             size_bytes = os.path.getsize(file_path)
@@ -38,16 +57,16 @@ def size(fun: Callable) -> Callable:
     return _wrapper
 
 #Method 1: soter integer 0s and 1s as numpy arrays
-class DeckStack:
+class DeckStack_npy:
     """
     A class to represent multiple shuffled decks.
     Takes the number of decks and random seed as input.
+    If no random seed is specified, then find the largest existing seed and add one.
     
     """
-    @timer
+    @gen_timer
     def __init__(self, num_decks: int, seed: int = None):
 
-        #self.seed = seed
         self.num_decks = num_decks
 
         #Search existing decks to find next seed
@@ -73,7 +92,7 @@ class DeckStack:
     def __repr__(self):
         return f"DeckStack(seed={self.seed}, cards={self.decks})"
     
-    #@size
+    @get_size
     @timer
     def save_decks(self):
         np.save(f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks) 
