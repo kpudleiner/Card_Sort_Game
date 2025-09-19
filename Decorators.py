@@ -21,7 +21,8 @@ def gen_timer(fun: Callable) -> Callable:
         num_decks = self.num_decks
 
         if not os.path.exists('Deck_Stats.csv'):
-            Deck_Stats = pd.DataFrame(columns=['num_decks', 
+            Deck_Stats = pd.DataFrame(columns=['deck_type',
+                                               'num_decks', 
                                                'random_seed', 
                                                'gen_time', 
                                                'file_size', 
@@ -30,19 +31,15 @@ def gen_timer(fun: Callable) -> Callable:
         else:
             Deck_Stats = pd.read_csv('Deck_Stats.csv')
 
-        if seed in Deck_Stats['random_seed'].values: #theoretically shouldn't happen
-            raise ValueError(
-                    f'Decks with this random seed have already been generatied. Please choose a different seed.'
-                    )
-        else:
-            new_row = pd.DataFrame([{'num_decks': num_decks, 
-                                    'random_seed': seed, 
-                                    'gen_time': run_time.total_seconds(), 
-                                    'file_size': None, 
-                                    'write_time': None, 
-                                    'read_time': None}])
-            Deck_Stats = pd.concat([Deck_Stats, new_row], ignore_index = True)
-            Deck_Stats.to_csv('Deck_Stats.csv', index = False)
+        new_row = pd.DataFrame([{'deck_type': self.__class__.__name__,
+                                'num_decks': num_decks, 
+                                'random_seed': seed, 
+                                'gen_time': run_time.total_seconds(), 
+                                'file_size': None, 
+                                'write_time': None, 
+                                'read_time': None}])
+        Deck_Stats = pd.concat([Deck_Stats, new_row], ignore_index = True)
+        Deck_Stats.to_csv('Deck_Stats.csv', index = False)
 
         return results
     return _wrapper
@@ -63,16 +60,22 @@ def write_read_timer(fun: Callable) -> Callable:
         seed = self.seed
         num_decks = self.num_decks
 
-        np.load(f'Decks/DeckStack_{seed}_{num_decks}.npy')
+        if self.__class__.__name__ == 'DeckStack_npy':
+            t0 = dt.now()
+            np.load(f'Decks/DeckStack_{seed}_{num_decks}.npy')
+            read_time = dt.now()- t0
+        elif self.__class__.__name__ == 'DeckStack_bin':
+            t0 = dt.now()
+            np.fromfile("Decks/DeckStack_9_10000.bin", dtype=np.int8)
+            read_time = dt.now()- t0
 
-        t0 = dt.now()
-        Deck_Stats = pd.read_csv('Deck_Stats.csv')
-        read_time = dt.now()- t0
         print(f'Ran for {read_time} sec(s)')
 
+        Deck_Stats = pd.read_csv('Deck_Stats.csv')
+
         if seed in Deck_Stats['random_seed'].values: #theoretically must happen
-            Deck_Stats.loc[Deck_Stats['random_seed'] == seed, 'write_time'] = write_time
-            Deck_Stats.loc[Deck_Stats['random_seed'] == seed, 'read_time'] = read_time
+            Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == self.__class__.__name__), 'write_time'] = write_time
+            Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == self.__class__.__name__), 'read_time'] = read_time
             Deck_Stats.to_csv('Deck_Stats.csv', index = False)
 
         else:
@@ -86,7 +89,10 @@ def get_size(fun: Callable) -> Callable:
         result = fun(*args, **kwargs)
         self = args[0]
 
-        file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy'
+        if self.__class__.__name__ == 'DeckStack_npy':
+            file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy'
+        elif self.__class__.__name__ == 'DeckStack_bin':
+            file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.bin'
         if os.path.exists(file_path):
             file_size_bytes = os.path.getsize(file_path)
             file_size_mb = file_size_bytes / (1024*1024)
@@ -100,7 +106,7 @@ def get_size(fun: Callable) -> Callable:
         Deck_Stats = pd.read_csv('Deck_Stats.csv')
 
         if seed in Deck_Stats['random_seed'].values: #theoretically must happen
-            Deck_Stats.loc[Deck_Stats['random_seed'] == seed, 'file_size'] = file_size_mb
+            Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == self.__class__.__name__), 'file_size'] = file_size_mb
             Deck_Stats.to_csv('Deck_Stats.csv', index = False)
 
         else:
