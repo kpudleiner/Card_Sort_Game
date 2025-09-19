@@ -16,5 +16,7 @@ At first glance, you may notice that method two wins in three out of the four ca
 Some may argue that the extra time making the .bin file is unimportant since that will only be done once when the decks are created. However, there are a couple other problems with this method that may come down the road with searching. Method two stores all the decks in a one-dimensional fasion instead of a two-dimensional one like method one. This means we will have to continuously select the first 52 integers in order to score, instead of simply selecting the first array. It's also notable that npy arrays have a miriad of functions that can assist in searching and scoring, as opposed to a simple array.
 
 
-Method 1: Generates 100 
-Method 2: Generates 100 binary files comprised of 10,000 "decks" of 52 cards, i.e. generates a binary array of randomly shuffled collection of 26 0's and 26 1's and reads that into the binary file.
+
+Method 1: Generates 1,000,000 "decks" of 52 cards by generating a "binary" array of randomly shuffled collection of 26 0's and 26 1's, and saves these into 100 numpy array files of 10,000 decks each.
+
+Method 2: Generates 1,000,000 "decks" of 52 cards by generating a "binary" array of randomly shuffled collection of 26 0's and 26 1's and saves these into 100 binary files of 10,000 decks each.
