@@ -3,6 +3,7 @@ import numpy as np
 import os
 import pandas as pd
 import random
+import datetime as dt
 
 #Run to Delete all decks and stats
 #Uncomment if you want to run tests from begining
@@ -31,9 +32,18 @@ Deck_Stats['write_time'] = pd.to_timedelta(Deck_Stats['write_time'])
 Deck_Stats['read_time'] = pd.to_timedelta(Deck_Stats['read_time'])
 
 Stat_Avgs = Deck_Stats.groupby(['deck_type', 'num_decks']).agg(['mean', 'std']).reset_index()
-print(Stat_Avgs['read_time'])
 
-#Method one:
-#DeckStack(10000)
-#Time:
-#file size
+Stat_Avgs[('gen_time', 'mean')] = Stat_Avgs[('gen_time', 'mean')].dt.total_seconds().round(5)
+Stat_Avgs[('write_time', 'mean')] = Stat_Avgs[('write_time', 'mean')].dt.total_seconds().round(5)
+Stat_Avgs[('read_time', 'mean')] = Stat_Avgs[('read_time', 'mean')].dt.total_seconds().round(5)
+Stat_Avgs[('file_size', 'mean')] = Stat_Avgs[('file_size', 'mean')].round(5)
+
+Stat_Avgs[('gen_time', 'std')] = Stat_Avgs[('gen_time', 'std')].dt.total_seconds().round(5)
+Stat_Avgs[('write_time', 'std')] = Stat_Avgs[('write_time', 'std')].dt.total_seconds().round(5)
+Stat_Avgs[('read_time', 'std')] = Stat_Avgs[('read_time', 'std')].dt.total_seconds().round(5)
+Stat_Avgs[('file_size', 'std')] = Stat_Avgs[('file_size', 'std')].round(5)
+
+Stat_Avgs = Stat_Avgs.drop('random_seed', axis=1)
+
+print(Stat_Avgs)
+
