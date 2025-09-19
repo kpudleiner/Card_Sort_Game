@@ -13,10 +13,10 @@ import random
 #     os.remove(file_path)
 # os.remove('Deck_Stats.csv')
 
-#Create 10 sets of 10,000 decks (each type)
+#Create 20 sets of 10,000 decks (each type)
 #All run time and size information being saved to "Deck_Stats.csv"
 
-# for i in range(100):
+# for i in range(200):
 #     decks_npy = DeckStack_npy(10000)
 #     decks_npy.save_decks()
 #     decks_bin = DeckStack_bin(10000)
@@ -30,19 +30,8 @@ Deck_Stats['gen_time'] = pd.to_timedelta(Deck_Stats['gen_time'])
 Deck_Stats['write_time'] = pd.to_timedelta(Deck_Stats['write_time'])
 Deck_Stats['read_time'] = pd.to_timedelta(Deck_Stats['read_time'])
 
-#Calculate the averages for each type of deck
-# Decks_npy = Deck_Stats[Deck_Stats['deck_type'] == 'DeckStack_npy']
-# Decks_bin = Deck_Stats[Deck_Stats['deck_type'] == 'DeckStack_bin']
-
-# print(Decks_npy.head())
-# print(Decks_bin.head())
-
-# print(f'NPY Decks \n Generation Time: {Decks_npy['gen_time'].mean()} \n File Size: {Decks_npy['file_size'].mean()} \n Write Time: {Decks_npy['write_time'].mean()} \n Read Time: {Decks_npy['read_time'].mean()}')
-
-# print(f'Bin Decks \n Generation Time: {Decks_bin['gen_time'].mean()} \n File Size: {Decks_bin['file_size'].mean()} \n Write Time: {Decks_bin['write_time'].mean()} \n Read Time: {Decks_bin['read_time'].mean()}')
-
-Stat_Avgs = Deck_Stats.groupby(['deck_type', 'num_decks']).mean().reset_index()
-print(Stat_Avgs)
+Stat_Avgs = Deck_Stats.groupby(['deck_type', 'num_decks']).agg(['mean', 'std']).reset_index()
+print(Stat_Avgs['read_time'])
 
 #Method one:
 #DeckStack(10000)

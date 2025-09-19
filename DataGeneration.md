@@ -6,10 +6,10 @@ For our project, we explored two different ways to generate and store a deck of 
 
 For each method, we created 100 sets of 10,000 decks, leading to 1,000,000 decks. Using decorators, we recorded deck generation time, file size, read time, and write time. These values were stored in "Deck_Stats.csv" and the average were calculated. 
 
-|Method        |Generation Time (s) |File Size (mb) |Read Time (s) |Write Time (s) |
-|--------------|--------------------|---------------|--------------|---------------|
-|Method 1: NPY |0.01745             |0.49603        |0.00936       |0.06457        |
-|Method 2: BIN |0.09211             |0.49591        |0.00578       |0.02053        |
+|Method        |Generation Time (s) |File Size (mb) |Write Time (s)    |Read Time (s)      |
+|--------------|--------------------|---------------|------------------|-------------------|
+|Method 1: NPY |0.01748 +- 0.00588  |0.49603 +- 0.0 |0.03114 +- 0.01711|0.11450 +- 0.04380 |
+|Method 2: BIN |0.09503 +- 0.01027  |0.49591 +- 0.0 |0.01023 +- 0.01364|0.04184 +- 0.01340 |
 
 At first glance, you may nothice that method two wins in three out of the four categories. It has a much smaller read and write time, as well as a slightly smaller file size. However, it's generation time is almost time times that of method one. This is likely due to the for loops present in method two that are noticably absent form method one. When we add together the generation, read, and write times, method one actually has a smaller total time of 0.098138 seconds versus 0.11842 seconds for method two. The differences now become more negligable between the two methods
 
