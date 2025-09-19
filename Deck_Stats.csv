@@ -1,8 +1,0 @@
-deck_type,num_decks,random_seed,gen_time,file_size,write_time,read_time
-DeckStack_npy,10000,14,0.014929,,,
-DeckStack_npy,10000,15,0.01604,,,
-DeckStack_npy,10000,16,0.027951,,,
-DeckStack_npy,10000,17,0.012889,,0:00:00,0:00:00.197188
-DeckStack_npy,10000,18,0.022341,0.49603271484375,0:00:00.004433,0:00:00.247974
-DeckStack_bin,10000,20,0.10466,,0:00:00.007793,0:00:00
-DeckStack_bin,10000,21,0.099893,0.49591064453125,0:00:00.011885,0:00:00
