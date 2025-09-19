@@ -4,15 +4,15 @@ import os
 import pandas as pd
 import random
 
-#method1_generation_timer = []
-for i in range(10):
+#Create 10 sets of 10,000 decks (each type)
+#All run time and size information being saved to "Deck_Stats.csv"
+for i in range(100):
     decks_npy = DeckStack_npy(10000)
     decks_npy.save_decks()
     decks_bin = DeckStack_bin(10000)
     decks_bin.save_decks()
 
-# test2 = DeckStack_npy(10000)
-# test2.save_decks()
+
 
 
 
@@ -20,7 +20,9 @@ for i in range(10):
 # print(data)
 # print(len(data))
 
-print(pd.read_csv('Deck_Stats.csv'))
+Deck_Stats = pd.read_csv('Deck_Stats.csv')
+print(Deck_Stats.head())
+print(len(Deck_Stats))
 
 #Method one:
 #DeckStack(10000)
