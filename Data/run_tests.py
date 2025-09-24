@@ -47,3 +47,7 @@ Stat_Avgs[('file_size', 'std')] = Stat_Avgs[('file_size', 'std')].round(5)
 Stat_Avgs = Stat_Avgs.drop('random_seed', axis=1)
 
 print(Stat_Avgs)
+
+#Test example deck
+# test = DeckStack_npy(5)
+# print(test.decks)
