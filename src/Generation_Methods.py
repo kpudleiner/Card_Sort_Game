@@ -1,10 +1,10 @@
 import numpy as np
 import os
 import random
-from src.Decorators import gen_timer, write_read_timer, get_size
+from src.decorators import gen_timer, write_read_timer, get_size
 
 #Method 1: soter integer 0s and 1s as numpy arrays
-class DeckStack:
+class DeckStackNpy:
     """
     A class to represent multiple shuffled decks.
     Takes the number of decks and random seed as input.
@@ -51,7 +51,7 @@ class DeckStack:
 
 
 #Method 2: generate integers as arrays and save as .bin file
-class DeckStack_bin:
+class DeckStackBin:
     """
     A class to represent multiple shuffled decks.
     Takes the number of decks and random seed as input.

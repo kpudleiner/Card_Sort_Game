@@ -1,3 +1,0 @@
-deck_type,num_decks,random_seed,gen_time,file_size,write_time,read_time
-DeckStack,10000,400,0 days 00:00:00.031857,,,
-DeckStack,10000,401,0 days 00:00:00.018002,0.49603271484375,0:00:00,0:00:00.874210

@@ -23,7 +23,7 @@ def gen_timer(fun: Callable) -> Callable:
         class_name = self.__class__.__name__
 
         # If Deck_Stats doesn't exist, create it
-        if not os.path.exists('Deck_Stats.csv'):
+        if not os.path.exists('src/Deck_Stats.csv'):
             Deck_Stats = pd.DataFrame(columns=['deck_type',
                                                'num_decks', 
                                                'random_seed', 
@@ -32,7 +32,7 @@ def gen_timer(fun: Callable) -> Callable:
                                                'write_time', 
                                                'read_time'])
         else:
-            Deck_Stats = pd.read_csv('Deck_Stats.csv')
+            Deck_Stats = pd.read_csv('src/Deck_Stats.csv')
 
         #Add a new row to the file with the runtime just found
         new_row = pd.DataFrame([{'deck_type': class_name,
@@ -43,7 +43,7 @@ def gen_timer(fun: Callable) -> Callable:
                                 'write_time': None, 
                                 'read_time': None}])
         Deck_Stats = pd.concat([Deck_Stats, new_row], ignore_index = True)
-        Deck_Stats.to_csv('Deck_Stats.csv', index = False)
+        Deck_Stats.to_csv('src/Deck_Stats.csv', index = False)
 
         return results
     return _wrapper
@@ -69,11 +69,11 @@ def write_read_timer(fun: Callable) -> Callable:
         class_name = self.__class__.__name__
 
         #Find the associated deck and load it, recording load time
-        if self.__class__.__name__ == 'DeckStack':
+        if self.__class__.__name__ == 'DeckStackNpy':
             t0 = dt.now()
             np.load(f'Decks/DeckStack_{seed}_{num_decks}.npy')
             read_time = dt.now()- t0
-        elif self.__class__.__name__ == 'DeckStack_bin':
+        elif self.__class__.__name__ == 'DeckStackBin':
             t0 = dt.now()
             np.fromfile(f'Decks/DeckStack_{seed}_{num_decks}.bin', dtype=np.int8)
             read_time = dt.now()- t0
@@ -81,11 +81,11 @@ def write_read_timer(fun: Callable) -> Callable:
 
         #Add write and read time to Deck_Stats
         #A row with this random seed and deck type must already exist since an instance must be created to run .save_decks()
-        Deck_Stats = pd.read_csv('Deck_Stats.csv')
+        Deck_Stats = pd.read_csv('src/Deck_Stats.csv')
         if seed in Deck_Stats['random_seed'].values: 
             Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == class_name), 'write_time'] = write_time
             Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == class_name), 'read_time'] = read_time
-            Deck_Stats.to_csv('Deck_Stats.csv', index = False)
+            Deck_Stats.to_csv('src/Deck_Stats.csv', index = False)
         else: # should never actually happen since we check the seed in the class definition
             raise ValueError(f'No deck with this random seed found.')
 
@@ -106,9 +106,9 @@ def get_size(fun: Callable) -> Callable:
         seed = self.seed
 
         #Find file path dependent on file type.
-        if class_name == 'DeckStack':
+        if class_name == 'DeckStackNpy':
             file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy'
-        elif class_name == 'DeckStack_bin':
+        elif class_name == 'DeckStackBin':
             file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.bin'
 
         #Find file size
@@ -121,10 +121,10 @@ def get_size(fun: Callable) -> Callable:
             raise FileNotFoundError(f"Warning: File {file_path} not found.")
         
         #Store file size in associated row of Deck_Stats
-        Deck_Stats = pd.read_csv('Deck_Stats.csv')
+        Deck_Stats = pd.read_csv('src/Deck_Stats.csv')
         if seed in Deck_Stats['random_seed'].values: #theoretically must happen
             Deck_Stats.loc[(Deck_Stats['random_seed'] == seed) & (Deck_Stats['deck_type'] == class_name), 'file_size'] = file_size_mb
-            Deck_Stats.to_csv('Deck_Stats.csv', index = False)
+            Deck_Stats.to_csv('src/Deck_Stats.csv', index = False)
         else:
             raise ValueError(f'No deck with this random seed found.')
 
