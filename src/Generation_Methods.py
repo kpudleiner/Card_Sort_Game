@@ -1,10 +1,10 @@
 import numpy as np
 import os
 import random
-from Decorators import gen_timer, write_read_timer, get_size
+from src.Decorators import gen_timer, write_read_timer, get_size
 
 #Method 1: soter integer 0s and 1s as numpy arrays
-class DeckStack_npy:
+class DeckStack:
     """
     A class to represent multiple shuffled decks.
     Takes the number of decks and random seed as input.
@@ -14,6 +14,8 @@ class DeckStack_npy:
 
     @gen_timer
     def __init__(self, num_decks: int, seed: int = None):
+
+        DECK_HALF_SIZE = 26
 
         self.num_decks = num_decks
 
@@ -32,7 +34,7 @@ class DeckStack_npy:
             else:
                 self.seed = max(used_seeds) + 1
 
-        unshuffled_deck = np.array([0]*26 + [1]*26, dtype = np.int8) 
+        unshuffled_deck = np.array([0]*DECK_HALF_SIZE + [1]*DECK_HALF_SIZE, dtype = np.int8) 
         np.random.seed(self.seed)
         self.decks = np.tile(unshuffled_deck, (num_decks, 1))
         np.array([np.random.shuffle(row) for row in self.decks])

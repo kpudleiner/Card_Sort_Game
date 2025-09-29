@@ -69,7 +69,7 @@ def write_read_timer(fun: Callable) -> Callable:
         class_name = self.__class__.__name__
 
         #Find the associated deck and load it, recording load time
-        if self.__class__.__name__ == 'DeckStack_npy':
+        if self.__class__.__name__ == 'DeckStack':
             t0 = dt.now()
             np.load(f'Decks/DeckStack_{seed}_{num_decks}.npy')
             read_time = dt.now()- t0
@@ -106,7 +106,7 @@ def get_size(fun: Callable) -> Callable:
         seed = self.seed
 
         #Find file path dependent on file type.
-        if class_name == 'DeckStack_npy':
+        if class_name == 'DeckStack':
             file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy'
         elif class_name == 'DeckStack_bin':
             file_path = f'Decks/DeckStack_{self.seed}_{self.num_decks}.bin'
