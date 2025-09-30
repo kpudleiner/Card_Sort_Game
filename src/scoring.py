@@ -38,21 +38,40 @@ import numpy as np
 deck = np.load(f'../Decks/DeckStack_0_10000.npy')[0]
 print(deck)
 
+deck_str = ''.join(map(str, deck))
+print(deck_str)
+
 def find_first_pattern(deck, patterns):
-    indices = {}
-    for pattern in patterns:
-        for i in range(len(deck) - 2):
-            if np.array_equal(deck[i:i+3], pattern):
-                indices[''.join(map(str, pattern))] = i+3
-                break
-        else:
-            indices[''.join(map(str, pattern))] = None  # Not found
+    indices = {pattern: deck.find(pattern) for pattern in patterns}
+    if -1 in indices.values():
+        #end_game(indices)
+        print('game over')
     return indices
 
-patterns = [[1, 1, 1], [0, 0, 1]]
+# def find_first_pattern(deck, patterns):
+#     indices = {}
+#     for pattern in patterns:
+#         for i in range(len(deck) - 2):
+#             if np.array_equal(deck[i:i+3], pattern):
+#                 indices[''.join(map(str, pattern))] = i+3
+#                 break
+#         else:
+#             indices[''.join(map(str, pattern))] = None  # Not found
+#     return indices
 
-indicies = find_first_pattern(deck, patterns)
+patterns = ['111', '001']
+
+indicies = find_first_pattern(deck_str, patterns)
 print(indicies)
 
-decks = np.load(f'../Decks/DeckStack_0_10000.npy')
+# p1_tricks = 0
+# p2_tricks = 0
+# p1_cards = 0
+# p2_cards = 0
+
+# cards_left = 52
+# while cards_left > 2:
+#     indicies = find_first_pattern(deck, patterns)
+
+
 
