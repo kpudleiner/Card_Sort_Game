@@ -83,7 +83,6 @@ import numpy as np
 
 
 
-
 class ScoringDeck:
     """
     """
@@ -109,11 +108,11 @@ class ScoringDeck:
 
     def score_deck(self):
         patterns = [self.p1, self.p2]
-        print(patterns)
-        while self.cards_left > 3:
+        #print(patterns)
+        while self.cards_left > 2:
             indices = {pattern: self.cards.find(pattern) + 3 for pattern in patterns}
             #indices = find_first_pattern(deck_str, patterns)
-            print(indices)
+            #print(indices)
             indices_vals = list(indices.values())
             if indices_vals[0] == 2 and indices_vals[1] == 2:
                 print('game over')
@@ -127,15 +126,15 @@ class ScoringDeck:
                 self.p2_cards += indices_vals[1]
                 self.cards_left = self.cards_left - indices_vals[1]
 
-            print(self.p1_tricks, self.p2_tricks)
-            print(self.p1_cards, self.p2_cards)
+            #print(self.p1_tricks, self.p2_tricks)
+            #print(self.p1_cards, self.p2_cards)
 
             if indices_vals[0] == 2: cards_gone = indices_vals[1]
             elif indices_vals[1] == 2: cards_gone = indices_vals[0]
             else: cards_gone = min(indices.values())
             self.cards = self.cards[cards_gone:]
-            print(self.cards)
-            print(self.cards_left)
+            #print(self.cards)
+            #print(self.cards_left)
 
         final_counts = {'p1_tricks': self.p1_tricks, 
                         'p2_tricks': self.p2_tricks,
@@ -145,12 +144,27 @@ class ScoringDeck:
         return final_counts
     
 deck = np.load(f'../Decks/DeckStack_0_10000.npy')[0]
-print(deck)
+#print(deck)
 
 deck_str = ''.join(map(str, deck))
 print(deck_str)
 
-test = ScoringDeck(deck_str, '111', '001')
-print(test.cards)
-print(test.cards_left)
-final_counts = test.score_deck()
+# test = ScoringDeck(deck_str, '111', '001')
+# print(test.cards)
+# print(test.cards_left)
+# final_counts = test.score_deck()
+# print(final_counts)
+
+patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
+for pattern in patterns:
+    for pattern_2 in patterns:
+        if pattern == pattern_2:
+            break
+        #print(pattern, pattern_2)
+        deck_to_score = ScoringDeck(deck_str, pattern, pattern_2)
+        final_counts = deck_to_score.score_deck()
+
+        print(pattern, pattern_2)
+        print(final_counts)
+
+        
