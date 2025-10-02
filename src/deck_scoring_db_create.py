@@ -34,3 +34,23 @@ CREATE TABLE IF NOT EXISTS player_wins (
 """
 
 db.run_action(sql, commit=True)
+
+patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
+for pattern in patterns:
+    for pattern_2 in patterns:
+        if pattern != pattern_2:
+            print(pattern, pattern_2)
+            sql = f"""
+            INSERT INTO player_wins (
+                p1, p2, p1_wins_tricks, p2_wins_tricks, p1_wins_cards, p2_wins_cards, draws_tricks, draws_cards
+            ) VALUES (
+                '{pattern}', '{pattern_2}', {0}, {0}, {0}, {0}, {0}, {0}
+            );
+            """
+            db.run_action(sql, commit=True)
+
+sql = """
+SELECT * FROM player_wins
+"""
+
+print(db.run_query(sql))
