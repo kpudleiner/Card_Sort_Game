@@ -1,5 +1,5 @@
 print('hello')
-from src.generation_methods import DeckStackBin, DeckStackNpy
+from src.deck_generation.generation_methods import DeckStackBin, DeckStackNpy
 # print('hello')
 # test = DeckStack(3, 0)
 # print(test.decks)

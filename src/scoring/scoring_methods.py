@@ -1,4 +1,4 @@
-from base_db import BaseDB
+from src.scoring.base_db import BaseDB
 import numpy as np
 import pandas as pd
 import os
@@ -145,7 +145,7 @@ class ScoringDeck:
                     self.save_deck_score(final_counts)
                     self.increment_player_wins(final_counts)
 
-def score_all_unscored_decks():
+def score_all_unscored_decks(deck_type):
     unscored_folder = "../Decks/Unscored"
     scored_folder = "../Decks/Scored"
 
@@ -153,21 +153,21 @@ def score_all_unscored_decks():
         file_path = os.path.join(unscored_folder, file_name)
         print(file_path)
 
-        score_file(file_path)
+        score_file(file_path, deck_type)
 
         destination_path = os.path.join(scored_folder, file_name)
         shutil.move(file_path, destination_path)
         print(f"Moved to: {destination_path}")
 
-def score_file(file_path):
-    #db_path = 'deck_scoring.sqlite'
-    #db = BaseDB(path = 'deck_scoring.sqlite')
-
+def score_file(file_path, deck_type):
     decks = np.load(file_path)
     #print(deck)
     for deck in decks[:100]:
         deck_str = ''.join(map(str, deck))
-        scoring_deck = ScoringDeck(deck_str)
+        if deck_type == 'ScoringDeck':
+            scoring_deck = ScoringDeck(deck_str)
+        else:
+            scoring_deck = ScoringDeckPd(deck_str)
         scoring_deck.score_save_all_combos()
 
 
@@ -237,7 +237,6 @@ class ScoringDeckPd:
         for pattern in patterns:
             for pattern_2 in patterns:
                 if pattern != pattern_2:
-
                     final_counts = self.score_deck(pattern, pattern_2)
                     df = pd.concat([df, pd.DataFrame([final_counts])], ignore_index=True)
         sql = """
@@ -252,3 +251,9 @@ class ScoringDeckPd:
 
         self.db._conn.commit()
         self.db._close()
+
+    def find_player_scores(self):
+        sql = """
+        SELECT * FROM player_wins_view;
+        """
+        return self.db.run_query(sql)

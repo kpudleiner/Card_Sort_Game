@@ -1,4 +1,4 @@
-from base_db import BaseDB
+from src.scoring.base_db import BaseDB
 import numpy as np
 import pandas as pd
 

@@ -1,5 +1,5 @@
-from scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
-from base_db import BaseDB
+from src.scoring.scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
+from src.scoring.base_db import BaseDB
 import numpy as np
 
 db_path = 'deck_scoring.sqlite'

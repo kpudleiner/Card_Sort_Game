@@ -1,4 +1,4 @@
-from src.generation_methods import DeckStack_npy, DeckStack
+from src.deck_generation.generation_methods import DeckStack_npy, DeckStack
 import numpy as np
 import os
 import pandas as pd
