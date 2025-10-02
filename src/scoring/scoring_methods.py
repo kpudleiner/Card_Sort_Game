@@ -1,4 +1,5 @@
 from src.scoring.base_db import BaseDB
+from src.scoring.decorators import score_timer
 import numpy as np
 import pandas as pd
 import os
@@ -135,6 +136,7 @@ class ScoringDeck:
         params = (p1, p2)
         self.db.run_action(sql, params=params, commit=True)
 
+    #@score_timer
     def score_save_all_combos(self):
         patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
         for pattern in patterns:
@@ -144,32 +146,6 @@ class ScoringDeck:
                     final_counts = self.score_deck(pattern, pattern_2)
                     self.save_deck_score(final_counts)
                     self.increment_player_wins(final_counts)
-
-def score_all_unscored_decks(deck_type):
-    unscored_folder = "../Decks/Unscored"
-    scored_folder = "../Decks/Scored"
-
-    for file_name in os.listdir(unscored_folder):
-        file_path = os.path.join(unscored_folder, file_name)
-        print(file_path)
-
-        score_file(file_path, deck_type)
-
-        destination_path = os.path.join(scored_folder, file_name)
-        shutil.move(file_path, destination_path)
-        print(f"Moved to: {destination_path}")
-
-def score_file(file_path, deck_type):
-    decks = np.load(file_path)
-    #print(deck)
-    for deck in decks[:100]:
-        deck_str = ''.join(map(str, deck))
-        if deck_type == 'ScoringDeck':
-            scoring_deck = ScoringDeck(deck_str)
-        else:
-            scoring_deck = ScoringDeckPd(deck_str)
-        scoring_deck.score_save_all_combos()
-
 
 class ScoringDeckPd:
     """
@@ -231,6 +207,7 @@ class ScoringDeckPd:
         self.scored = True
         return final_counts
 
+    #@score_timer
     def score_save_all_combos(self):
         df = pd.DataFrame(columns = ['deck', 'p1', 'p2','p1_tricks', 'p2_tricks', 'p1_cards', 'p2_cards'])
         patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
@@ -257,3 +234,29 @@ class ScoringDeckPd:
         SELECT * FROM player_wins_view;
         """
         return self.db.run_query(sql)
+    
+
+def score_all_unscored_decks(deck_type):
+    unscored_folder = "../../Decks/Unscored"
+    scored_folder = "../../Decks/Scored"
+
+    for file_name in os.listdir(unscored_folder):
+        file_path = os.path.join(unscored_folder, file_name)
+        print(file_path)
+
+        score_file(file_path, deck_type)
+
+        destination_path = os.path.join(scored_folder, file_name)
+        shutil.move(file_path, destination_path)
+        print(f"Moved to: {destination_path}")
+
+def score_file(file_path, deck_type):
+    decks = np.load(file_path)
+    #print(deck)
+    for deck in decks[:2]:
+        deck_str = ''.join(map(str, deck))
+        if deck_type == 'ScoringDeck':
+            scoring_deck = ScoringDeck(deck_str)
+        else:
+            scoring_deck = ScoringDeckPd(deck_str)
+        scoring_deck.score_save_all_combos()
