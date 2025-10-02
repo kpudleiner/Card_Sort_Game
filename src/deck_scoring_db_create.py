@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS deck_scores (
 db.run_action(sql, commit=True)
 
 sql = """
+DROP TABLE player_wins;
+"""
+
+db.run_action(sql, commit=True)
+
+sql = """
 CREATE TABLE IF NOT EXISTS player_wins (
     p1 TEXT,
     p2 TEXT,
