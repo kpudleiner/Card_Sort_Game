@@ -32,22 +32,26 @@ class ScoringDeck:
         while cards_left > 2:
             indices = {pattern: cards.find(pattern) + 3 for pattern in patterns}
             indices_vals = list(indices.values())
+            print('indices', indices_vals)
             if indices_vals[0] == 2 and indices_vals[1] == 2:
                 #print('game over')
                 break
-            elif indices_vals[0] < indices_vals[1] and indices_vals[0] != 2:
+            elif (indices_vals[0] < indices_vals[1] and indices_vals[0] != 2) or (indices_vals[1] == 2):
                 p1_tricks += 1
                 p1_cards += indices_vals[0]
                 cards_left = cards_left - indices_vals[0]
             else:
+                print('in loop')
                 p2_tricks +=1
                 p2_cards += indices_vals[1]
                 cards_left = cards_left - indices_vals[1]
-
+            print('tricks:', p1_tricks, p2_tricks, 'cards:', p1_cards, p2_cards)
+            print('cards left', cards_left)
             if indices_vals[0] == 2: cards_gone = indices_vals[1]
             elif indices_vals[1] == 2: cards_gone = indices_vals[0]
             else: cards_gone = min(indices.values())
             cards = cards[cards_gone:]
+            print(cards)
 
         final_counts = {'p1': p1,
                         'p2': p2,
