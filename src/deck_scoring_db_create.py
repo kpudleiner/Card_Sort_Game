@@ -6,6 +6,11 @@ db_path = 'deck_scoring.sqlite'
 db = BaseDB(path=db_path)
 
 sql = """
+DROP TABLE IF EXISTS deck_scores;
+"""
+db.run_action(sql, commit=True)
+
+sql = """
 CREATE TABLE IF NOT EXISTS deck_scores (
     deck TEXT,
     p1 TEXT,
@@ -20,7 +25,7 @@ CREATE TABLE IF NOT EXISTS deck_scores (
 db.run_action(sql, commit=True)
 
 sql = """
-CREATE VIEW player_wins_view AS
+CREATE VIEW IF NOT EXISTS player_wins_view AS
 SELECT p1
     , p2
     , SUM(CASE WHEN p1_tricks > p2_tricks THEN 1 ELSE 0 END) AS p1_wins_tricks
@@ -37,7 +42,7 @@ db.run_action(sql, commit=True)
 
 
 sql = """
-DROP TABLE player_wins;
+DROP TABLE IF EXISTS player_wins;
 """
 db.run_action(sql, commit=True)
 

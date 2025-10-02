@@ -1,4 +1,4 @@
-from scoring_methods import ScoringDeck, score_all_unscored_decks, score_file
+from scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
 from base_db import BaseDB
 import numpy as np
 
@@ -19,8 +19,13 @@ db = BaseDB(path='deck_scoring.sqlite')
 
 # score_all_unscored_decks()
 
+deck = np.load(f'../Decks/DeckStack_0_10000.npy')[0]
+deck_str = ''.join(map(str, deck))
+test = ScoringDeckPd(deck_str)
+test.score_save_all_combos()
+
 sql = """
-SELECT * FROM player_wins
+SELECT * FROM deck_scores
 """
 
 print(db.run_query(sql))
@@ -57,7 +62,7 @@ print(db.run_query(sql))
 # db.run_action(sql, commit=True)
 
 
-sql = """
-SELECT * FROM player_wins_view;
-"""
-print(db.run_query(sql))
+# sql = """
+# SELECT * FROM player_wins_view;
+# """
+# print(db.run_query(sql))

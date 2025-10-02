@@ -220,7 +220,8 @@ class ScoringDeckPd:
             cards = cards[cards_gone:]
             #print(cards)
 
-        final_counts = {'p1': p1,
+        final_counts = {'deck': self.original_deck,
+                        'p1': p1,
                         'p2': p2,
                         'p1_tricks': p1_tricks, 
                         'p2_tricks': p2_tricks,
@@ -229,26 +230,6 @@ class ScoringDeckPd:
                         }
         self.scored = True
         return final_counts
-    
-    def save_deck_score(self, final_counts: dict):
-        if self.scored == False:
-            raise PermissionError("You must run .score_deck() before you can save the results using .save_scores()")
-        
-        p1 = final_counts['p1']
-        p2 = final_counts['p2']
-        p1_tricks = final_counts['p1_tricks']
-        p2_tricks = final_counts['p2_tricks']
-        p1_cards = final_counts['p1_cards']
-        p2_cards = final_counts['p2_cards']
-        
-        sql = f"""
-        INSERT INTO deck_scores (
-            deck, p1, p2, p1_tricks, p2_tricks, p1_cards, p2_cards
-        ) VALUES (
-            '{self.original_deck}', '{p1}', '{p2}', {p1_tricks}, {p2_tricks}, {p1_cards}, {p2_cards}
-        );
-        """
-        self.db.run_action(sql, commit=True)
 
     def score_save_all_combos(self):
         df = pd.DataFrame(columns = ['deck', 'p1', 'p2','p1_tricks', 'p2_tricks', 'p1_cards', 'p2_cards'])
