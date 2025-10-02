@@ -7,15 +7,11 @@ class ScoringDeck:
     """
     """
 
-    def __init__(self, cards: str , p1: str, p2:str ) -> dict :
+    def __init__(self, cards: str) -> dict :
 
-        DECK_SIZE = 52
+        self.DECK_SIZE = 52
 
-        self.cards = cards
-        self.cards_left = DECK_SIZE
-
-        self.p1 = p1
-        self.p2 = p2
+        self.original_deck = cards
 
         self.p1_tricks = 0
         self.p2_tricks = 0
@@ -29,13 +25,24 @@ class ScoringDeck:
     def __repr__(self):
         return f"DeckStack(cards={self.cards})"
 
-    def score_deck(self):
-        patterns = [self.p1, self.p2]
+    def score_deck(self, p1:str, p2:str) -> dict:
+        patterns = [p1, p2]
+
+        self.cards = self.original_deck
+        self.cards_left = self.DECK_SIZE
+
+        self.p1_tricks = 0
+        self.p2_tricks = 0
+        self.p1_cards = 0
+        self.p2_cards = 0
+
         #print(patterns)
         while self.cards_left > 2:
             indices = {pattern: self.cards.find(pattern) + 3 for pattern in patterns}
             #indices = find_first_pattern(deck_str, patterns)
             #print(indices)
+            print(self.cards)
+            print(patterns)
             indices_vals = list(indices.values())
             if indices_vals[0] == 2 and indices_vals[1] == 2:
                 print('game over')
@@ -59,7 +66,9 @@ class ScoringDeck:
             #print(self.cards)
             #print(self.cards_left)
 
-        final_counts = {'p1_tricks': self.p1_tricks, 
+        final_counts = {'p1': p1,
+                        'p2': p2,
+                        'p1_tricks': self.p1_tricks, 
                         'p2_tricks': self.p2_tricks,
                         'p1_cards': self.p1_cards,
                         'p2_cards': self.p2_cards
@@ -67,33 +76,48 @@ class ScoringDeck:
         self.scored = True
         return final_counts
     
-    def save_scores(self):
+    def save_score(self, final_counts: dict):
         if self.scored == False:
             raise PermissionError("You must run .score_deck() before you can save the results using .save_scores()")
+        
         sql = f"""
         INSERT INTO deck_scores (
             deck, p1, p2, p1_tricks, p2_tricks, p1_cards, p2_cards
         ) VALUES (
-            '{self.cards}', '{self.p1}', '{self.p2}', {self.p1_tricks}, {self.p2_tricks}, {self.p1_cards}, {self.p2_cards}
+            '{self.original_deck}', '{final_counts['p1']}', '{final_counts['p2']}', {self.p1_tricks}, {self.p2_tricks}, {self.p1_cards}, {self.p2_cards}
         );
         """
         self.db.run_action(sql, commit=True)
-        
-    
+
+    def score_save_all_combos(self):
+        patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
+        for pattern in patterns:
+            for pattern_2 in patterns:
+                if pattern != pattern_2:
+
+                    final_counts = self.score_deck(pattern, pattern_2)
+                    print(final_counts)
+                    self.save_score(final_counts)
+
+                    # print(pattern, pattern_2)
+                    # print(final_counts)
+
+
 deck = np.load(f'../Decks/DeckStack_0_10000.npy')[0]
 #print(deck)
 
 deck_str = ''.join(map(str, deck))
 print(deck_str)
 
-test = ScoringDeck(deck_str, '111', '001')
-final_counts = test.score_deck()
-print(final_counts)
-test.save_scores()
-
-
 db_path = 'deck_scoring.sqlite'
 db = BaseDB(path='deck_scoring.sqlite', create=True)
+
+sql = "DELETE FROM deck_scores"
+db.run_action(sql, commit=True)
+
+test = ScoringDeck(deck_str)
+test.score_save_all_combos()
+
 sql = """
 SELECT * FROM deck_scores
 """
