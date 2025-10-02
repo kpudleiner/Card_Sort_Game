@@ -32,3 +32,5 @@ CREATE TABLE IF NOT EXISTS player_wins (
     PRIMARY KEY(p1, p2)
 );
 """
+
+db.run_action(sql, commit=True)
