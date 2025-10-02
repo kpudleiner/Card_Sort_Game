@@ -23,7 +23,7 @@ import datetime as dt
 #     decks_bin.save_decks()
 
 #Stats recorded during deck generation are stored in "Deck_Stats"
-Deck_Stats = pd.read_csv('Deck_Stats.csv')
+Deck_Stats = pd.read_csv('deck_stats.csv')
 # print(Deck_Stats.head())
 # print(len(Deck_Stats))
 
