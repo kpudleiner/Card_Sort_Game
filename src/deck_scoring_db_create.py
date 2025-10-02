@@ -20,9 +20,25 @@ CREATE TABLE IF NOT EXISTS deck_scores (
 db.run_action(sql, commit=True)
 
 sql = """
+CREATE VIEW player_wins_view AS
+SELECT p1
+    , p2
+    , SUM(CASE WHEN p1_tricks > p2_tricks THEN 1 ELSE 0 END) AS p1_wins_tricks
+    , SUM(CASE WHEN p2_tricks > p1_tricks THEN 1 ELSE 0 END) AS p2_wins_tricks
+    , SUM(CASE WHEN p1_cards > p2_cards THEN 1 ELSE 0 END) AS p1_wins_cards
+    , SUM(CASE WHEN p2_cards > p1_cards THEN 1 ELSE 0 END) AS p2_wins_cards
+    , SUM(CASE WHEN p1_tricks = p2_tricks THEN 1 ELSE 0 END) AS draws_tricks
+    , SUM(CASE WHEN p1_cards = p2_cards THEN 1 ELSE 0 END) AS draws_cards
+FROM deck_scores
+GROUP BY p1, p2
+;
+"""
+db.run_action(sql, commit=True)
+
+
+sql = """
 DROP TABLE player_wins;
 """
-
 db.run_action(sql, commit=True)
 
 sql = """
@@ -38,7 +54,6 @@ CREATE TABLE IF NOT EXISTS player_wins (
     PRIMARY KEY(p1, p2)
 );
 """
-
 db.run_action(sql, commit=True)
 
 patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
@@ -56,7 +71,8 @@ for pattern in patterns:
             db.run_action(sql, commit=True)
 
 sql = """
-SELECT * FROM player_wins
+SELECT * FROM player_wins;
 """
 
 print(db.run_query(sql))
+
