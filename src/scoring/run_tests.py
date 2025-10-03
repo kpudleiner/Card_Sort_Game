@@ -6,7 +6,7 @@ import pandas as pd
 import os
 import shutil
 
-## Method 1: 
+# Method 1: 
 reset_db()
 score_all_unscored_decks('ScoringDeck')
 
@@ -32,7 +32,7 @@ for file_name in os.listdir(scored_folder):
     destination_path = os.path.join(unscored_folder, file_name)
     shutil.move(file_path, destination_path)
 
-## Method 2: 
+# Method 2: 
 reset_db()
 score_all_unscored_decks('ScoringDeckPd')
 
