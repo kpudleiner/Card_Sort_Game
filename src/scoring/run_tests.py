@@ -3,26 +3,51 @@ from deck_scoring_db_create import reset_db
 from base_db import BaseDB
 import numpy as np
 import pandas as pd
-from importlib import reload
-#reload()
+import os
+import shutil
 
-# reset_db()
-# score_all_unscored_decks('ScoringDeck')
+## Method 1: 
+reset_db()
+score_all_unscored_decks('ScoringDeck')
 
-# db_path = 'deck_scoring.sqlite'
-# db = BaseDB(path='deck_scoring.sqlite')
+db_path = 'deck_scoring.sqlite'
+db = BaseDB(path='deck_scoring.sqlite')
 
-# sql = """
-# SELECT * FROM deck_scores
-# """
+sql = """
+SELECT * FROM deck_scores
+"""
+print(db.run_query(sql))
 
-# print(db.run_query(sql))
+sql = """
+SELECT * FROM player_wins
+"""
+print(db.run_query(sql))
 
-# sql = """
-# SELECT * FROM player_wins
-# """
+#Move scored decks back to unscored folder
+unscored_folder = "../../Decks/Unscored"
+scored_folder = "../../Decks/Scored"
+for file_name in os.listdir(scored_folder):
+    file_path = os.path.join(scored_folder, file_name)
 
-# print(db.run_query(sql))
+    destination_path = os.path.join(unscored_folder, file_name)
+    shutil.move(file_path, destination_path)
+
+## Method 2: 
+reset_db()
+score_all_unscored_decks('ScoringDeckPd')
+
+db_path = 'deck_scoring.sqlite'
+db = BaseDB(path='deck_scoring.sqlite')
+
+sql = """
+SELECT * FROM deck_scores
+"""
+print(db.run_query(sql))
+
+sql = """
+SELECT * FROM player_wins_view
+"""
+print(db.run_query(sql))
 
 
 #Stats recorded during scoring are stored in "Deck_Stats"

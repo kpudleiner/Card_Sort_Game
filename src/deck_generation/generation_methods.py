@@ -46,7 +46,7 @@ class DeckStackNpy:
     @get_size
     @write_read_timer
     def save_decks(self):
-        np.save(f'Decks/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks) 
+        np.save(f'Decks/Unscored/DeckStack_{self.seed}_{self.num_decks}.npy', self.decks) 
 
 
 
@@ -92,6 +92,6 @@ class DeckStackBin:
     @get_size
     @write_read_timer
     def save_decks(self):
-        with open(f'Decks/DeckStack_{self.seed}_{self.num_decks}.bin', "wb") as f:
+        with open(f'Decks/Unscored/DeckStack_{self.seed}_{self.num_decks}.bin', "wb") as f:
             for deck in self.decks:
                 f.write(bytes(deck))
