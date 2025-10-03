@@ -1,5 +1,5 @@
-from src.scoring.base_db import BaseDB
-from src.scoring.decorators import score_timer
+from base_db import BaseDB
+from decorators import score_timer
 import numpy as np
 import pandas as pd
 import os
@@ -136,7 +136,7 @@ class ScoringDeck:
         params = (p1, p2)
         self.db.run_action(sql, params=params, commit=True)
 
-    #@score_timer
+    @score_timer
     def score_save_all_combos(self):
         patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
         for pattern in patterns:
@@ -207,7 +207,7 @@ class ScoringDeckPd:
         self.scored = True
         return final_counts
 
-    #@score_timer
+    @score_timer
     def score_save_all_combos(self):
         df = pd.DataFrame(columns = ['deck', 'p1', 'p2','p1_tricks', 'p2_tricks', 'p1_cards', 'p2_cards'])
         patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
@@ -235,7 +235,6 @@ class ScoringDeckPd:
         """
         return self.db.run_query(sql)
     
-
 def score_all_unscored_decks(deck_type):
     unscored_folder = "../../Decks/Unscored"
     scored_folder = "../../Decks/Scored"
@@ -253,7 +252,7 @@ def score_all_unscored_decks(deck_type):
 def score_file(file_path, deck_type):
     decks = np.load(file_path)
     #print(deck)
-    for deck in decks[:2]:
+    for deck in decks[:100]:
         deck_str = ''.join(map(str, deck))
         if deck_type == 'ScoringDeck':
             scoring_deck = ScoringDeck(deck_str)

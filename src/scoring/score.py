@@ -1,5 +1,6 @@
-from src.scoring.scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
-from src.scoring.base_db import BaseDB
+from scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
+from deck_scoring_db_create import reset_db
+from base_db import BaseDB
 import numpy as np
 
 # sql = "DELETE FROM deck_scores"
@@ -14,7 +15,8 @@ import numpy as np
 #     test = ScoringDeck(deck_str)
 #     test.score_save_all_combos()
 
-score_all_unscored_decks('ScoringDeck')
+reset_db()
+score_all_unscored_decks('ScoringDeckPd')
 
 # deck = np.load(f'../Decks/DeckStack_0_10000.npy')[0]
 # deck_str = ''.join(map(str, deck))
@@ -31,7 +33,7 @@ SELECT * FROM deck_scores
 print(db.run_query(sql))
 
 sql = """
-SELECT * FROM player_wins
+SELECT * FROM player_wins_view
 """
 
 print(db.run_query(sql))
