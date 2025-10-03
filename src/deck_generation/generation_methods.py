@@ -61,6 +61,8 @@ class DeckStackBin:
     @gen_timer
     def __init__(self, num_decks: int, seed: int = None):
 
+        DECK_HALF_SIZE = 26
+
         self.num_decks = num_decks
 
         #Search existing decks to find next seed, raise error if seed has already been used
@@ -82,7 +84,7 @@ class DeckStackBin:
         random.seed(self.seed)
         self.decks = []
         for i in range(num_decks):
-            deck = [0] * 26 + [1] * 26
+            deck = [0] * DECK_HALF_SIZE + [1] * DECK_HALF_SIZE
             random.shuffle(deck)
             self.decks.append(deck)
 

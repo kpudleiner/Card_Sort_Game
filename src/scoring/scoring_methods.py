@@ -337,10 +337,11 @@ def score_file(file_path:str, deck_type:str):
     and uses a for loop to call .score_save_all_combos().
     It takes a file path and deck_type as inputs (ScoringDeck)
     """
+    DECKS_TO_SCORE = 100 #for test purposes, in actuallity want to score whole thing
 
     decks = np.load(file_path)
 
-    for deck in decks[:100]:
+    for deck in decks[:DECKS_TO_SCORE]:
         deck_str = ''.join(map(str, deck))
         if deck_type == 'ScoringDeck':
             scoring_deck = ScoringDeck(deck_str)

@@ -21,7 +21,9 @@ print(db.run_query(sql))
 sql = """
 SELECT * FROM player_wins
 """
-print(db.run_query(sql))
+player_wins_method1 = db.run_query(sql)
+player_wins_method1['Method'] = 1
+print(player_wins_method1)
 
 #Move scored decks back to unscored folder
 unscored_folder = "../../Decks/Unscored"
@@ -47,11 +49,16 @@ print(db.run_query(sql))
 sql = """
 SELECT * FROM player_wins_view
 """
-print(db.run_query(sql))
 
+player_wins_method2 = db.run_query(sql)
+player_wins_method2['Method'] = 2
+print(player_wins_method2)
 
-#Stats recorded during scoring are stored in "Deck_Stats"
-score_stats = pd.read_csv('score_stats.csv')
+combined_wins = pd.concat([player_wins_method1, player_wins_method2], ignore_index=True)
+combined_wins.to_csv('player_wins.csv')
+
+#Stats recorded during scoring are stored in "score_time_stats"
+score_stats = pd.read_csv('score_time_stats.csv')
 print(score_stats.head())
 print(len(score_stats))
 
@@ -59,11 +66,8 @@ score_stats['score_time'] = pd.to_timedelta(score_stats['score_time'])
 
 #Calculate averages and standard deviations for each method
 stat_avgs = score_stats.groupby(['score_type']).agg(['mean', 'std']).reset_index()
-
 stat_avgs[('score_time', 'mean')] = stat_avgs[('score_time', 'mean')].dt.total_seconds().round(5)
-
 stat_avgs[('score_time', 'std')] = stat_avgs[('score_time', 'std')].dt.total_seconds().round(5)
-
 
 print(stat_avgs)
 
