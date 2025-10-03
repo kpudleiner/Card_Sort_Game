@@ -298,17 +298,7 @@ class ScoringDeckPd:
 
         return
 
-    def find_player_scores(self):
-        """
-        This function selects the view created in deck_scoring_db_create.
-        It is the equivalent of the 'player_wins' table,
-        but pulls directly from the 'deck_scores' instead of recording through the scoring process.
-        """
 
-        sql = """
-        SELECT * FROM player_wins_view;
-        """
-        return self.db.run_query(sql)
     
 def score_all_unscored_decks(deck_type):
     """
@@ -337,7 +327,7 @@ def score_file(file_path:str, deck_type:str):
     and uses a for loop to call .score_save_all_combos().
     It takes a file path and deck_type as inputs (ScoringDeck)
     """
-    DECKS_TO_SCORE = 100 #for test purposes, in actuallity want to score whole thing
+    DECKS_TO_SCORE = 200 #for test purposes, in actuallity want to score whole thing
 
     decks = np.load(file_path)
 
@@ -348,3 +338,19 @@ def score_file(file_path:str, deck_type:str):
         else:
             scoring_deck = ScoringDeckPd(deck_str)
         scoring_deck.score_save_all_combos()
+
+def save_player_scores(self):
+    """
+    This function selects the view created in deck_scoring_db_create.
+    It is the equivalent of the 'player_wins' table,
+    but pulls directly from the 'deck_scores' instead of recording through the scoring process.
+    """
+
+    db = BaseDB(path='deck_scoring.sqlite', create=True)
+    sql = """
+    SELECT * FROM player_wins_view;
+    """
+    player_wins = self.db.run_query(sql)
+    player_wins.to_csv('player_wins.csv')
+
+    return self.db.run_query(sql)

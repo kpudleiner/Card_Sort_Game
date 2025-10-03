@@ -6,24 +6,23 @@ import pandas as pd
 import os
 import shutil
 
-# Method 1: 
-reset_db()
-score_all_unscored_decks('ScoringDeck')
+# # Method 1: 
+# reset_db()
+# score_all_unscored_decks('ScoringDeck')
 
-db_path = 'deck_scoring.sqlite'
-db = BaseDB(path='deck_scoring.sqlite')
+# db_path = 'deck_scoring.sqlite'
+# db = BaseDB(path='deck_scoring.sqlite')
 
-sql = """
-SELECT * FROM deck_scores
-"""
-print(db.run_query(sql))
+# sql = """
+# SELECT * FROM deck_scores
+# """
+# print(db.run_query(sql))
 
-sql = """
-SELECT * FROM player_wins
-"""
-player_wins_method1 = db.run_query(sql)
-player_wins_method1['Method'] = 1
-print(player_wins_method1)
+# sql = """
+# SELECT * FROM player_wins
+# """
+
+# print(db.run_query(sql))
 
 #Move scored decks back to unscored folder
 unscored_folder = "../../Decks/Unscored"
@@ -49,13 +48,9 @@ print(db.run_query(sql))
 sql = """
 SELECT * FROM player_wins_view
 """
-
 player_wins_method2 = db.run_query(sql)
-player_wins_method2['Method'] = 2
+player_wins_method2.to_csv('player_wins.csv')
 print(player_wins_method2)
-
-combined_wins = pd.concat([player_wins_method1, player_wins_method2], ignore_index=True)
-combined_wins.to_csv('player_wins.csv')
 
 #Stats recorded during scoring are stored in "score_time_stats"
 score_stats = pd.read_csv('score_time_stats.csv')
