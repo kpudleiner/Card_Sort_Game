@@ -3,6 +3,11 @@ import numpy as np
 import pandas as pd
 
 def reset_db():
+    """
+    This function can be used to create or replace the database tables that contain deck scores.
+    It will delete the 'deck_scores' and 'player_wins' table if they exist and create them again.
+    It also creates the 'player_wins_view' that is used for the second scoring method.
+    """
 
     db_path = 'deck_scoring.sqlite'
     db = BaseDB(path=db_path)
@@ -76,4 +81,6 @@ def reset_db():
                 """
                 db.run_action(sql, commit=True)
 
+    return
 
+#reset_db
