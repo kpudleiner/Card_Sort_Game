@@ -1,4 +1,4 @@
-from scoring_methods import ScoringDeck, ScoringDeckPd, score_all_unscored_decks, score_file
+from scoring_methods import ScoringDeckPd, score_all_unscored_decks, score_file
 from deck_scoring_db_create import reset_db
 from base_db import BaseDB
 import numpy as np

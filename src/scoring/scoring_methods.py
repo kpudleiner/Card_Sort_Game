@@ -1,5 +1,5 @@
-from base_db import BaseDB
-from decorators import score_timer
+from src.scoring.base_db import BaseDB
+from src.scoring.decorators import score_timer
 import numpy as np
 import pandas as pd
 import os
@@ -23,7 +23,7 @@ class ScoringDeckPd:
         self.original_deck = cards
 
         self.scored = False
-        self.db = BaseDB(path='deck_scoring.sqlite', create=True)
+        self.db = BaseDB(path='src/scoring/deck_scoring.sqlite', create=True)
 
     def __repr__(self):
         return f"DeckStack(cards={self.cards})"
@@ -86,7 +86,7 @@ class ScoringDeckPd:
 
         return final_counts
 
-    @score_timer
+    #@score_timer
     def score_save_all_combos(self):
         """
         This is the culminating method to be called in order to score a deck and save the results.
@@ -126,8 +126,8 @@ def score_all_unscored_decks():
     and scoring it accordingly.
     """
 
-    unscored_folder = "../../Decks/Unscored"
-    scored_folder = "../../Decks/Scored"
+    unscored_folder = "Decks/Unscored"
+    scored_folder = "Decks/Scored"
 
     for file_name in os.listdir(unscored_folder):
         file_path = os.path.join(unscored_folder, file_name)
@@ -160,7 +160,7 @@ def save_player_scores():
     but pulls directly from the 'deck_scores' instead of recording through the scoring process.
     """
 
-    db = BaseDB(path='deck_scoring.sqlite', create=True)
+    db = BaseDB(path='src/scoring/deck_scoring.sqlite')
     sql = """
     SELECT * FROM player_wins_view;
     """
