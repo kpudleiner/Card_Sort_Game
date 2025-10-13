@@ -33,7 +33,6 @@ for file_name in os.listdir(scored_folder):
     destination_path = os.path.join(unscored_folder, file_name)
     shutil.move(file_path, destination_path)
 
-# Method 2: 
 reset_db()
 score_all_unscored_decks('ScoringDeckPd')
 
