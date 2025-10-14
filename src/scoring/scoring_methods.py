@@ -154,22 +154,6 @@ def score_file(file_path:str):
         scoring_deck = ScoringDeckPd(deck_str)
         scoring_deck.score_save_all_combos()
 
-# def save_player_scores():
-#     """
-#     This function selects the view created in deck_scoring_db_create.
-#     It is the equivalent of the 'player_wins' table,
-#     but pulls directly from the 'deck_scores' instead of recording through the scoring process.
-#     """
-
-#     db = BaseDB(path='src/scoring/deck_scoring.sqlite')
-#     sql = """
-#     SELECT * FROM player_wins_view;
-#     """
-#     player_wins = db.run_query(sql)
-#     player_wins.to_csv('src/scoring/player_wins.csv')
-
-#     return db.run_query(sql)
-
 def save_player_scores():
     """
     This function selects the view created in deck_scoring_db_create.
@@ -205,3 +189,93 @@ def save_player_scores():
     combined_wins.to_csv('src/scoring/player_wins.csv')
 
     reset_db()
+
+#########################################################################
+#     #@score_timer
+#     def score_all_combos(self):
+#         """
+#         This is the culminating method to be called in order to score a deck and save the results.
+#         It cycles through all possible choices for the players, calling ._score_deck() to score.
+#         It then adds each deck's score to a dataframe, and once all options have been scored,
+#         it inserts them into 'deck_scores' while keeping the database open.
+#         """
+
+#         df = pd.DataFrame(columns = ['deck', 'p1', 'p2','p1_tricks', 'p2_tricks', 'p1_cards', 'p2_cards'])
+
+#         patterns = ['000', '001', '010', '011', '100', '101', '110', '111']
+#         for pattern in patterns:
+#             for pattern_2 in patterns:
+#                 if pattern != pattern_2:
+#                     final_counts = self._score_deck(pattern, pattern_2)
+#                     df = pd.concat([df, pd.DataFrame([final_counts])], ignore_index=True)
+#         #print('One single deck scored:')
+#         #print(df)
+#         #print(len(df))
+
+#         return df
+
+
+    
+# def score_all_unscored_decks():
+#     """
+#     This function searches the "Unscored" folder in the Decks subdirectory.
+#     It takes any unscored deck, and calls the file_score method on it, 
+#     creating an instance of either the ScoringDeck or ScoringDeckPd class,
+#     and scoring it accordingly.
+#     """
+
+#     unscored_folder = "Decks/Unscored"
+#     scored_folder = "Decks/Scored"
+
+#     for file_name in os.listdir(unscored_folder):
+#         file_path = os.path.join(unscored_folder, file_name)
+#         print(file_path)
+
+#         score_file(file_path)
+
+#         destination_path = os.path.join(scored_folder, file_name)
+#         shutil.move(file_path, destination_path)
+#         print(f"Moved to: {destination_path}")
+
+# def score_file(file_path:str):
+#     """
+#     This function loads a single .npy file of multiple decks,
+#     and uses a for loop to call .score_save_all_combos().
+#     It takes a file path and deck_type as inputs (ScoringDeck)
+#     """
+#     DB = BaseDB(path='src/scoring/deck_scoring.sqlite', create=True)
+
+#     df = pd.DataFrame(columns = ['deck', 'p1', 'p2','p1_tricks', 'p2_tricks', 'p1_cards', 'p2_cards'])
+
+#     decks = np.load(file_path)
+
+#     i = 0
+#     print(i)
+#     for deck in decks: 
+#         deck_str = ''.join(map(str, deck))
+#         scoring_deck = ScoringDeckPd(deck_str)
+#         df_new = scoring_deck.score_all_combos()
+#         df = pd.concat([df, df_new], ignore_index=True)
+#         i+=1
+#         if i % 1000 == 0:
+#             print(f'{i}/10,000')
+#             print(len(df))
+#         #print('new concat df:')
+#         #print(df)
+#         #print(len(df))
+
+#     sql = """
+#     INSERT INTO deck_scores (
+#         deck, p1, p2, p1_tricks, p2_tricks, p1_cards, p2_cards
+#     ) VALUES (?, ?, ?, ?, ?, ?, ?);
+#     """
+#     DB._connect()
+#     for _, row in df.iterrows():
+#         DB.run_action(sql, params=tuple(row), keep_open=True)
+#     DB._conn.commit()
+#     DB._close()
+
+#     return
+
+
+

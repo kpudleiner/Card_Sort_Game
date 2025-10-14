@@ -1,14 +1,27 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods import score_all_unscored_decks, save_player_scores
+from src.scoring.scoring_methods import score_all_unscored_decks, save_player_scores, score_file
 from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
 
+# decks_npy = DeckStackNpy(10000)
+# decks_npy.save_decks()
+
+# reset_db()
+
+score_file('Decks/Unscored/DeckStack_34_10000.npy')
+
+db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+sql = """
+SELECT COUNT(*) FROM deck_scores;
+"""
+print(db.run_query(sql))
+
 # for i in range(1):
-#     decks_npy = DeckStackNpy(10000)
+#     decks_npy = DeckStackNpy(5)
 #     decks_npy.save_decks()
 
-reset_db()
+#reset_db()
 
 # score_all_unscored_decks()
 
