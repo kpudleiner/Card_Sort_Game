@@ -13,12 +13,15 @@ if num_decks < 10000:
     decks_npy.save_decks()
 else:
     num_10000 = num_decks//10000
+    print(num_10000)
     remaining_decks = num_decks % 10000
+    print(remaining_decks)
     for i in range(num_10000):
         decks_npy = DeckStackNpy(10000)
         decks_npy.save_decks()
-    decks_npy = DeckStackNpy(remaining_decks)
-    decks_npy.save_decks()
+    if remaining_decks != 0:
+        decks_npy = DeckStackNpy(remaining_decks)
+        decks_npy.save_decks()
 
 print(f'Scoring {num_decks} new decks.')
 

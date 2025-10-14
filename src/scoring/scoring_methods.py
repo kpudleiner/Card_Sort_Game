@@ -1,4 +1,5 @@
 from src.scoring.base_db import BaseDB
+from src.scoring.deck_scoring_db_create import reset_db
 from src.scoring.decorators import score_timer
 import numpy as np
 import pandas as pd
@@ -168,3 +169,36 @@ def save_player_scores():
     player_wins.to_csv('src/scoring/player_wins.csv')
 
     return db.run_query(sql)
+
+def save_player_scores_new():
+    """
+    This function selects the view created in deck_scoring_db_create.
+    It is the equivalent of the 'player_wins' table,
+    but pulls directly from the 'deck_scores' instead of recording through the scoring process.
+    """
+
+    db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+    sql = """
+    SELECT * FROM player_wins_view;
+    """
+    new_wins = db.run_query(sql)
+    print(new_wins)
+    current_wins = pd.read_csv('src/scoring/player_wins.csv')
+    print(current_wins)
+
+    columns_to_sum = [
+    'p1_wins_tricks', 'p2_wins_tricks',
+    'p1_wins_cards', 'p2_wins_cards',
+    'draws_tricks', 'draws_cards'
+    ]
+
+    # Create a new DataFrame by copying one of them (so we preserve the index and other columns)
+    combined_wins = current_wins.copy()
+
+    # Add the values from df2 for the specified columns
+    combined_wins[columns_to_sum] = current_wins[columns_to_sum] + new_wins[columns_to_sum]
+    print(combined_wins)
+
+    #combined_wins.to_csv('src/scoring/player_wins.csv')
+
+    #reset_db()
