@@ -47,7 +47,7 @@ Because we will need to store hundreds of millions of rows of scoring informatio
 
 To test these methods, we moved 5 files of 10,000 decks into the "Unscored" folder. For the sake of time, we only did the first 200 decks of each file as our first method takes quite some time. We created a decorator to time how long it takes to score one singe deck all 56 ways add the scores to the database. The timing results can be seen below.
 
-|Method        |Generation Time (s) | Database Size (KB)|
+|Method        |Scoring Time (s) | Database Size (KB)|
 |--------------|--------------------|-------------------|
 |Method 1 (ScoringDeck): |0.72920  +/-  0.24929 | 12,544 |
 |Method 2 (ScoringDeckPd):  |0.02849 +/- 0.01569 | 12,544 |
