@@ -154,23 +154,23 @@ def score_file(file_path:str):
         scoring_deck = ScoringDeckPd(deck_str)
         scoring_deck.score_save_all_combos()
 
+# def save_player_scores():
+#     """
+#     This function selects the view created in deck_scoring_db_create.
+#     It is the equivalent of the 'player_wins' table,
+#     but pulls directly from the 'deck_scores' instead of recording through the scoring process.
+#     """
+
+#     db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+#     sql = """
+#     SELECT * FROM player_wins_view;
+#     """
+#     player_wins = db.run_query(sql)
+#     player_wins.to_csv('src/scoring/player_wins.csv')
+
+#     return db.run_query(sql)
+
 def save_player_scores():
-    """
-    This function selects the view created in deck_scoring_db_create.
-    It is the equivalent of the 'player_wins' table,
-    but pulls directly from the 'deck_scores' instead of recording through the scoring process.
-    """
-
-    db = BaseDB(path='src/scoring/deck_scoring.sqlite')
-    sql = """
-    SELECT * FROM player_wins_view;
-    """
-    player_wins = db.run_query(sql)
-    player_wins.to_csv('src/scoring/player_wins.csv')
-
-    return db.run_query(sql)
-
-def save_player_scores_new():
     """
     This function selects the view created in deck_scoring_db_create.
     It is the equivalent of the 'player_wins' table,
@@ -199,6 +199,6 @@ def save_player_scores_new():
     combined_wins[columns_to_sum] = current_wins[columns_to_sum] + new_wins[columns_to_sum]
     print(combined_wins)
 
-    #combined_wins.to_csv('src/scoring/player_wins.csv')
+    combined_wins.to_csv('src/scoring/player_wins.csv')
 
-    #reset_db()
+    reset_db()
