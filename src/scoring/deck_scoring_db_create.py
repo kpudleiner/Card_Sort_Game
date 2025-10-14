@@ -1,4 +1,4 @@
-from base_db import BaseDB
+from src.scoring.base_db import BaseDB
 import numpy as np
 import pandas as pd
 
@@ -9,7 +9,7 @@ def reset_db():
     It also creates the 'player_wins_view' that is used for the second scoring method.
     """
 
-    db_path = 'deck_scoring.sqlite'
+    db_path = 'src/scoring/deck_scoring.sqlite'
     db = BaseDB(path=db_path)
 
     sql = """

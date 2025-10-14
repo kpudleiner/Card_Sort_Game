@@ -148,7 +148,7 @@ def score_file(file_path:str):
 
     decks = np.load(file_path)
 
-    for deck in decks:
+    for deck in decks: 
         deck_str = ''.join(map(str, deck))
         scoring_deck = ScoringDeckPd(deck_str)
         scoring_deck.score_save_all_combos()
@@ -165,6 +165,6 @@ def save_player_scores():
     SELECT * FROM player_wins_view;
     """
     player_wins = db.run_query(sql)
-    player_wins.to_csv('player_wins.csv')
+    player_wins.to_csv('src/scoring/player_wins.csv')
 
     return db.run_query(sql)

@@ -1,3 +1,6 @@
+#don't update sqlite database
+src/scoring/deck_scoring.sqlite
+__pycache__/
 
 downloads/
 eggs/
