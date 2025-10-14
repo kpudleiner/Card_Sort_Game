@@ -10,7 +10,7 @@ def reset_db():
     """
 
     db_path = 'src/scoring/deck_scoring.sqlite'
-    db = BaseDB(path=db_path)
+    db = BaseDB(path=db_path, create = True)
 
     sql = """
     DROP TABLE IF EXISTS deck_scores;

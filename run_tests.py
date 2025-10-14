@@ -8,15 +8,15 @@ import pandas as pd
 #     decks_npy = DeckStackNpy(10000)
 #     decks_npy.save_decks()
 
-# reset_db()
+reset_db()
 
 # score_all_unscored_decks()
 
-db = BaseDB(path='src/scoring/deck_scoring.sqlite')
-sql = """
-SELECT COUNT(*) FROM deck_scores;
-"""
-print(db.run_query(sql))
+# db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+# sql = """
+# SELECT COUNT(*) FROM deck_scores;
+# """
+# print(db.run_query(sql))
 # new_wins = db.run_query(sql)
 # print(new_wins)
 

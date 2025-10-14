@@ -183,7 +183,10 @@ def save_player_scores():
     """
     new_wins = db.run_query(sql)
     print(new_wins)
-    current_wins = pd.read_csv('src/scoring/player_wins.csv')
+
+    current_wins = pd.read_csv('src/scoring/player_wins.csv', 
+                            index_col = 0, 
+                            dtype={'p1': str, 'p2': str})
     print(current_wins)
 
     columns_to_sum = [
