@@ -9,19 +9,19 @@ import pandas as pd
 
 # reset_db()
 
-score_file('Decks/Unscored/DeckStack_34_10000.npy')
+# score_file('Decks/Unscored/DeckStack_34_10000.npy')
 
-db = BaseDB(path='src/scoring/deck_scoring.sqlite')
-sql = """
-SELECT COUNT(*) FROM deck_scores;
-"""
-print(db.run_query(sql))
+# db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+# sql = """
+# SELECT COUNT(*) FROM deck_scores;
+# """
+# print(db.run_query(sql))
 
 # for i in range(1):
 #     decks_npy = DeckStackNpy(5)
 #     decks_npy.save_decks()
 
-#reset_db()
+reset_db()
 
 # score_all_unscored_decks()
 
