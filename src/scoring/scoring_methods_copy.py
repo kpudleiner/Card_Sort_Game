@@ -158,11 +158,11 @@ def score_file(file_path:str):
     It takes a file path and deck_type as inputs (ScoringDeck)
     """
 
-    current_results = pd.read_csv('src/scoring/player_wins.csv', 
+    current_results = pd.read_csv('src/scoring/player_wins_copy.csv', 
                                 index_col = 0, 
                                 dtype={'p1': str, 'p2': str})
     print(current_results)
-    
+
     columns_to_sum = [
     'p1_wins_tricks', 'p2_wins_tricks',
     'p1_wins_cards', 'p2_wins_cards',
@@ -175,8 +175,13 @@ def score_file(file_path:str):
         deck_str = ''.join(map(str, deck))
         scoring_deck = ScoringDeckPd(deck_str)
         new_results = scoring_deck.score_save_all_combos()
+        print(new_results)
 
         current_results[columns_to_sum] = current_results[columns_to_sum] + new_results[columns_to_sum]
+        
+        print(current_results)
+    
+    current_results.to_csv('src/scoring/player_wins_copy.csv')
         
 
     

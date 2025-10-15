@@ -1,9 +1,15 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods import score_all_unscored_decks, save_player_scores, score_file
+from src.scoring.scoring_methods_copy import score_all_unscored_decks, score_file
 from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
 import os
+
+# decks_npy = DeckStackNpy(2)
+# decks_npy.save_decks()
+
+score_file('src/Decks/Unscored/DeckStack_160_2.npy')
+
 
 # decks_npy = DeckStackNpy(10000)
 # decks_npy.save_decks()
@@ -54,7 +60,7 @@ import os
 
 # combined_wins.to_csv('src/scoring/player_wins.csv')
 
-reset_db()
+#reset_db()
 
 # print(pd.read_csv('src/scoring/player_wins.csv'))
 
