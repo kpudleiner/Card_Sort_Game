@@ -3,8 +3,12 @@ from src.scoring.scoring_methods import score_all_unscored_decks, save_player_sc
 from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
+import os
 
 num_decks = int(input("How many new decks would you like to create and score?"))
+
+os.remove('src/scoring/deck_scoring.sqlite')
+reset_db()
 
 print(f'Creating {num_decks} new decks.')
 

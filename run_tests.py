@@ -54,45 +54,45 @@ import os
 
 # combined_wins.to_csv('src/scoring/player_wins.csv')
 
-# reset_db()
+reset_db()
 
 # print(pd.read_csv('src/scoring/player_wins.csv'))
 
 ###################################################################
 
-def augment_decks(num_decks):
-    if num_decks < 10000:
-        decks_npy = DeckStackNpy(num_decks)
-        decks_npy.save_decks()
-    else:
-        num_10000 = num_decks//10000
-        print(num_10000)
-        remaining_decks = num_decks % 10000
-        print(remaining_decks)
-        for i in range(num_10000):
-            decks_npy = DeckStackNpy(10000)
-            decks_npy.save_decks()
-        if remaining_decks != 0:
-            decks_npy = DeckStackNpy(remaining_decks)
-            decks_npy.save_decks()
+# def augment_decks(num_decks):
+#     if num_decks < 10000:
+#         decks_npy = DeckStackNpy(num_decks)
+#         decks_npy.save_decks()
+#     else:
+#         num_10000 = num_decks//10000
+#         print(num_10000)
+#         remaining_decks = num_decks % 10000
+#         print(remaining_decks)
+#         for i in range(num_10000):
+#             decks_npy = DeckStackNpy(10000)
+#             decks_npy.save_decks()
+#         if remaining_decks != 0:
+#             decks_npy = DeckStackNpy(remaining_decks)
+#             decks_npy.save_decks()
 
-    print(f'Scoring {num_decks} new decks.')
+#     print(f'Scoring {num_decks} new decks.')
 
-    db = BaseDB(path='src/scoring/deck_scoring.sqlite')
-    sql = """
-        SELECT COUNT(*) from deck_scores;
-        """
-    print(db.run_query(sql))
+#     db = BaseDB(path='src/scoring/deck_scoring.sqlite')
+#     sql = """
+#         SELECT COUNT(*) from deck_scores;
+#         """
+#     print(db.run_query(sql))
 
-    score_all_unscored_decks()
+#     score_all_unscored_decks()
 
-    print(db.run_query(sql))
+#     print(db.run_query(sql))
 
-    save_player_scores()
+#     save_player_scores()
 
-    print('Updating Figures')
+#     print('Updating Figures')
 
-for i in range(2):
-    os.remove('src/scoring/deck_scoring.sqlite')
-    reset_db()
-    augment_decks(20000)
+# for i in range(20):
+#     os.remove('src/scoring/deck_scoring.sqlite')
+#     reset_db()
+#     augment_decks(50000)
