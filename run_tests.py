@@ -1,15 +1,17 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods_copy import score_all_unscored_decks, score_file
+from src.scoring.scoring_methods_copy import score_all_unscored_decks, ScoringDeckPd
 from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
 import os
 
-decks_npy = DeckStackNpy(10000)
-decks_npy.save_decks()
+# decks_npy = DeckStackNpy(10000)
+# decks_npy.save_decks()
+
+# deck = ScoringDeckPd('1110010010010001110010010010011110010010010001110010')
+# deck.score_deck_new('111', '000')
 
 score_all_unscored_decks()
-
 
 # decks_npy = DeckStackNpy(10000)
 # decks_npy.save_decks()

@@ -29,7 +29,7 @@ class ScoringDeckPd:
     def __repr__(self):
         return f"DeckStack(cards={self.cards})"
 
-    def _score_deck(self, p1:str, p2:str) -> dict:
+    def _score_deck_old(self, p1:str, p2:str) -> dict:
         """
         This method scores the cards in the deck.
         It takes two patterns, 'p1' and 'p2', which are the player's choices.
@@ -91,7 +91,7 @@ class ScoringDeckPd:
 
         if p1_cards > p2_cards:
             p1_wins_cards += 1
-        elif p2_tricks > p1_tricks:
+        elif p2_cards > p1_cards:
             p2_wins_cards += 1
         else:
             draws_cards += 1
@@ -106,6 +106,97 @@ class ScoringDeckPd:
                         'draws_cards': draws_cards
                         }
         self.scored = True
+
+        return final_counts
+    
+    def _score_deck(self, p1:str, p2:str) -> dict:
+        """
+        This method scores the cards in the deck.
+        It takes two patterns, 'p1' and 'p2', which are the player's choices.
+        They must be a three character string combination of 1s and 0s.
+        The method repeatedly finds which pattern occurs first, 
+        and then removes those cards until there are none left.
+        It returns a dictionary of the deck, as well as the final card and trick counts.
+        """
+        patterns = [p1, p2]
+
+        cards = self.original_deck
+        cards_left = self.DECK_SIZE
+
+        p1_tricks = 0
+        p2_tricks = 0
+        p1_cards = 0
+        p2_cards = 0
+
+        p1_wins_tricks = 0
+        p2_wins_tricks = 0
+        p1_wins_cards = 0
+        p2_wins_cards = 0
+        draws_tricks = 0
+        draws_cards = 0
+
+        start_index = 0
+
+        while cards_left > 2:
+            # add three to the index so that we cut off the deck after the pattern is complete
+            # note that this method returns -1 if the pattern is not found, which will now be 2
+            indices = {pattern: cards.find(pattern, start_index) + self.PATTERN_LEN for pattern in patterns}
+            indices_vals = list(indices.values())
+
+            # if neither index is found, the game is over
+            if indices_vals[0] == self.PATTERN_LEN-1 and indices_vals[1] == self.PATTERN_LEN-1:
+                break
+            # if pattern one is found before pattern two, or pattern two is not found, player one wins
+            # increment their tricks, increment their cards, keep track of remaining cards
+            elif (indices_vals[0] < indices_vals[1] and indices_vals[0] != self.PATTERN_LEN-1) or (indices_vals[1] == self.PATTERN_LEN-1):
+                p1_tricks += 1
+                p1_cards += indices_vals[0] - start_index
+                cards_left = self.DECK_SIZE - indices_vals[0]
+            # otherwise, player 2 wins, so do the same for them
+            else:
+                p2_tricks +=1
+                p2_cards += indices_vals[1] - start_index
+                cards_left = self.DECK_SIZE - indices_vals[1]
+
+            #subtract the appropriate amount from the count
+            if indices_vals[0] == self.PATTERN_LEN-1: start_index = indices_vals[1]
+            elif indices_vals[1] == self.PATTERN_LEN-1: start_index = indices_vals[0]
+            else: start_index = min(indices.values())
+            #cards = cards[cards_gone:]
+            #start_index = start_index + cards_gone
+
+            # print(cards)
+            # print(p1_tricks, p2_tricks)
+            # print(p1_cards, p2_cards)
+            # #print(cards_gone)
+            # print(start_index)
+
+
+        if p1_tricks > p2_tricks:
+            p1_wins_tricks += 1
+        elif p2_tricks > p1_tricks:
+            p2_wins_tricks += 1
+        else:
+            draws_tricks += 1
+
+        if p1_cards > p2_cards:
+            p1_wins_cards += 1
+        elif p2_cards > p1_cards:
+            p2_wins_cards += 1
+        else:
+            draws_cards += 1
+
+        final_counts = {'p1': p1,
+                        'p2': p2,
+                        'p1_wins_tricks': p1_wins_tricks, 
+                        'p2_wins_tricks': p2_wins_tricks,
+                        'p1_wins_cards': p1_wins_cards,
+                        'p2_wins_cards': p2_wins_cards,
+                        'draws_tricks': draws_tricks,
+                        'draws_cards': draws_cards
+                        }
+        self.scored = True
+        #print(final_counts)
 
         return final_counts
 
