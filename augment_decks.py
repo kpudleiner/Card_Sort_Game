@@ -7,7 +7,7 @@ import os
 
 num_decks = int(input("How many new decks would you like to create and score?"))
 
-os.remove('src/scoring/deck_scoring.sqlite')
+#os.remove('src/scoring/deck_scoring.sqlite')
 reset_db()
 
 print(f'Creating {num_decks} new decks.')

@@ -116,8 +116,6 @@ class ScoringDeckPd:
         self.db._close()
 
         return
-
-
     
 def score_all_unscored_decks():
     """
