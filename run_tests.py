@@ -4,6 +4,7 @@ from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
 import os
+from src.figures.create_figures import update_figures
 
 # decks_npy = DeckStackNpy(10000)
 # decks_npy.save_decks()
@@ -11,7 +12,9 @@ import os
 # deck = ScoringDeckPd('1110010010010001110010010010011110010010010001110010')
 # deck.score_deck_new('111', '000')
 
-score_all_unscored_decks()
+#score_all_unscored_decks()
+
+update_figures()
 
 # decks_npy = DeckStackNpy(10000)
 # decks_npy.save_decks()

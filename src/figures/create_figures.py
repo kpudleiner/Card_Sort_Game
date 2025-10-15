@@ -4,9 +4,14 @@ import seaborn as sns
 import os
 from matplotlib.patches import Rectangle
 
-df = pd.read_csv("src.scoring.player_wins.csv", dtype={"p1": str, "p2": str})
 
-def update_tricks_figure():
+def update_figures():
+    df = pd.read_csv("src.scoring.player_wins.csv", dtype={"p1": str, "p2": str})
+    update_tricks_figure(df)
+    update_cards_figure(df)
+
+def update_tricks_figure(df):
+    df = df
     # Compute
     df["total_tricks"] = df["p1_wins_tricks"] + df["p2_wins_tricks"] + df["draws_tricks"] # total tricks per matchup
     df["p1_win_rate_tricks"] = df["p1_wins_tricks"] / df["total_tricks"] # P1 win rate for tricks
@@ -54,7 +59,8 @@ def update_tricks_figure():
     #plt.show()
     plt.savefig("Figures/tricks_heatmap.png", dpi=100, bbox_inches="tight") # save heatmap as png
 
-def update_cards_figure():
+def update_cards_figure(df):
+    df = df
     # Compute
     df["total_cards"] = df["p1_wins_cards"] + df["p2_wins_cards"] + df["draws_cards"] # total tricks per matchup
     df["p1_win_rate_cards"] = df["p1_wins_cards"] / df["total_cards"] # P1 win rate for tricks
