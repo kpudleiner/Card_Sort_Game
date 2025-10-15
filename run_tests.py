@@ -5,10 +5,10 @@ from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd
 import os
 
-# decks_npy = DeckStackNpy(2)
-# decks_npy.save_decks()
+decks_npy = DeckStackNpy(10000)
+decks_npy.save_decks()
 
-score_file('src/Decks/Unscored/DeckStack_160_2.npy')
+score_all_unscored_decks()
 
 
 # decks_npy = DeckStackNpy(10000)
