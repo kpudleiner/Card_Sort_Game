@@ -1,9 +1,5 @@
-print('hello')
-from src.deck_generation.generation_methods import DeckStackBin, DeckStackNpy
-# print('hello')
-# test = DeckStack(3, 0)
-# print(test.decks)
+from src.scoring.augment_decks import augment_decks
 
-decks_npy = DeckStackBin(10000)
-decks_npy = DeckStackNpy(10000)
-decks_npy.save_decks()
+num_decks = int(input("How many new decks would you like to create and score?\n"))
+
+augment_decks(num_decks)

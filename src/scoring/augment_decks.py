@@ -35,7 +35,3 @@ def augment_decks(num_decks):
     #update_figures()
 
     print('Updates results are located in src/scoring/player_wins.csv\nUpdated figures are located in the Figures folder.')
-
-# num_decks = int(input("How many new decks would you like to create and score?\n"))
-
-# augment_decks(num_decks)
