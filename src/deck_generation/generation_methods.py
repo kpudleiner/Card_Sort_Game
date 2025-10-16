@@ -3,7 +3,6 @@ import os
 import random
 from src.deck_generation.decorators import gen_timer, write_read_timer, get_size
 
-#Method 1: soter integer 0s and 1s as numpy arrays
 class DeckStackNpy:
     """
     A class to represent multiple shuffled decks.

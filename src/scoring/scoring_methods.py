@@ -10,11 +10,9 @@ class ScoringDeckPd:
     """
     This creates a deck object and scores it with the second method.
     In this case, for each pattern combination:
-        - the deck scored
-        - the individual score is added to a pandas dataframe
+        - the deck scored, and which player wins is recorded (or if there is a draw)
     Once all combinations have been scored:
-        - each row of the pandas dataframe is added to the 'deck_score' table of deck_scoring.sqlite
-        - the player scores can be found using the 'player_score_view' of the 'deck_score' table
+        - they are combined into one dataframe and added to the player_wins.csv record (in a seperate method)
     """
 
     def __init__(self, cards: str) -> dict :
@@ -36,7 +34,7 @@ class ScoringDeckPd:
         They must be a three character string combination of 1s and 0s.
         The method repeatedly finds which pattern occurs first, 
         and then removes those cards until there are none left.
-        It returns a dictionary of the deck, as well as the final card and trick counts.
+        It returns a dictionary of the deck, as well as the final card and trick win counts.
         """
         patterns = [p1, p2]
 
