@@ -19,8 +19,8 @@ class DeckStackNpy:
         self.num_decks = num_decks
 
         #Search existing decks to find next seed
-        used_seeds_scored = [int(file.split('_')[1]) for file in os.listdir('Decks/Scored')]
-        used_seeds_unscored = [int(file.split('_')[1]) for file in os.listdir('Decks/Unscored')]
+        used_seeds_scored = [int(file.split('_')[1]) for file in os.listdir('Decks/Scored') if file.endswith('.npy')]
+        used_seeds_unscored = [int(file.split('_')[1]) for file in os.listdir('Decks/Unscored')if file.endswith('.npy')]
         used_seeds = used_seeds_scored + used_seeds_unscored
         if seed:
             if seed in used_seeds:

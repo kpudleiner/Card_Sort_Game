@@ -135,7 +135,16 @@ def score_all_unscored_decks():
     unscored_folder = "Decks/Unscored"
     scored_folder = "Decks/Scored"
 
+    # if unscored folder doesn't exist, create it
+
+    # if not os.path.exists(unscored_folder):
+    #     os.makedirs(unscored_folder)
+
     for file_name in os.listdir(unscored_folder):
+
+        if not file_name.endswith('.npy'):
+            continue
+
         file_path = os.path.join(unscored_folder, file_name)
         #print(file_path)
 
