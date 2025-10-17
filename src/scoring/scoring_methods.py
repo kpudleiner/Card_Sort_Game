@@ -1,5 +1,3 @@
-from src.scoring.base_db import BaseDB
-from src.scoring.deck_scoring_db_create import reset_db
 from src.scoring.decorators import score_timer
 import numpy as np
 import pandas as pd
