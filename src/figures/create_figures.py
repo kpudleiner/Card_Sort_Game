@@ -6,11 +6,20 @@ from matplotlib.patches import Rectangle
 
 
 def update_figures():
+    """
+    This method reads the current player results and calls
+    the methods to update both the tricks and wins figures,
+    located in the figures folder
+    """
     df = pd.read_csv("src/scoring/player_wins.csv", dtype={"p1": str, "p2": str})
     update_tricks_figure(df)
     update_cards_figure(df)
 
 def update_tricks_figure(df):
+    """
+    This method calculates win percentages for each combination based on tricks.
+    It then creates a heat map based on those numbers and saves it to the Figures folder.
+    """
     df = df
     # Compute
     df["total_tricks"] = df["p1_wins_tricks"] + df["p2_wins_tricks"] + df["draws_tricks"] # total tricks per matchup
@@ -56,10 +65,14 @@ def update_tricks_figure(df):
         ax.add_patch(rect)
 
     plt.tight_layout()
-    #plt.show()
     plt.savefig("Figures/tricks_heatmap.png", dpi=200, bbox_inches="tight") # save heatmap as png
 
 def update_cards_figure(df):
+    """
+    This method calculates win percentages for each combination based on cards.
+    It then creates a heat map based on those numbers and saves it to the Figures folder.
+    """
+    
     df = df
     df["total_cards"] = df["p1_wins_cards"] + df["p2_wins_cards"] + df["draws_cards"] # total tricks per matchup
     df["p1_win_rate_cards"] = df["p1_wins_cards"] / df["total_cards"] # P1 win rate for tricks
@@ -104,6 +117,5 @@ def update_cards_figure(df):
         ax.add_patch(rect)
 
     plt.tight_layout()
-    #plt.show()
     plt.savefig("Figures/cards_heatmap.png", dpi=200, bbox_inches="tight") # save heatmap as png
 

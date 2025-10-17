@@ -1,12 +1,16 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods_copy import score_all_unscored_decks
+from src.scoring.scoring_methods import score_all_unscored_decks
 from src.figures.create_figures import update_figures
 
 
 import pandas as pd
 import os
 
-def augment_decks(num_decks):
+def augment_decks(num_decks:int):
+    """
+    This method takes an input of an integer and creates and scores that number of new decks.
+    It adds these new results to the current ones, and updates the figures accordingly.
+    """
     num_decks = num_decks
 
     print(f'Creating {num_decks} new decks.')
@@ -32,10 +36,6 @@ def augment_decks(num_decks):
 
     print('Updating Figures')
 
-    #update_figures()
+    update_figures()
 
     print('Updates results are located in src/scoring/player_wins.csv\nUpdated figures are located in the Figures folder.')
-
-# num_decks = int(input("How many new decks would you like to create and score?\n"))
-
-# augment_decks(num_decks)

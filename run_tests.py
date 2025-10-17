@@ -1,5 +1,5 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods_copy import score_all_unscored_decks, ScoringDeckPd
+from scoring.scoring_methods import score_all_unscored_decks, ScoringDeckPd
 from src.scoring.base_db import BaseDB
 from src.scoring.deck_scoring_db_create import reset_db
 import pandas as pd

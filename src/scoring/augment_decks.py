@@ -1,5 +1,5 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from src.scoring.scoring_methods_copy import score_all_unscored_decks
+from scoring.scoring_methods import score_all_unscored_decks
 from src.figures.create_figures import update_figures
 
 
