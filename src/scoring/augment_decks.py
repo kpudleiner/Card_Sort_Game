@@ -1,5 +1,5 @@
 from src.deck_generation.generation_methods import DeckStackNpy
-from scoring.scoring_methods import score_all_unscored_decks
+from src.scoring.scoring_methods import score_all_unscored_decks
 from src.figures.create_figures import update_figures
 
 
@@ -32,6 +32,6 @@ def augment_decks(num_decks):
 
     print('Updating Figures')
 
-    #update_figures()
+    update_figures()
 
     print('Updates results are located in src/scoring/player_wins.csv\nUpdated figures are located in the Figures folder.')

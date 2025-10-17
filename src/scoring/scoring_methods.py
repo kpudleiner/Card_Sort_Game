@@ -139,13 +139,13 @@ def score_all_unscored_decks():
 
     for file_name in os.listdir(unscored_folder):
         file_path = os.path.join(unscored_folder, file_name)
-        print(file_path)
+        #print(file_path)
 
         score_file(file_path)
 
         destination_path = os.path.join(scored_folder, file_name)
         shutil.move(file_path, destination_path)
-        print(f"Moved to: {destination_path}")
+        #print(f"Moved to: {destination_path}")
 
 def score_file(file_path:str):
     """
